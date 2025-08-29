@@ -72,6 +72,8 @@ cd dify
 cd docker
 cp .env.example .env
 docker compose up -d
+or
+docker compose -p dify_docker up -d
 ```
 
 After running, you can access the Dify dashboard in your browser at [http://localhost/install](http://localhost/install) and start the initialization process.
