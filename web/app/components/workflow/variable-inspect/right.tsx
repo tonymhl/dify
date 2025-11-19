@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import {
   RiArrowGoBackLine,
   RiCloseLine,
+  RiFileDownloadFill,
   RiMenuLine,
   RiSparklingFill,
 } from '@remixicon/react'
@@ -23,14 +24,14 @@ import useNodeInfo from '../nodes/_base/hooks/use-node-info'
 import { useBoolean } from 'ahooks'
 import GetAutomaticResModal from '@/app/components/app/configuration/config/automatic/get-automatic-res'
 import GetCodeGeneratorResModal from '../../app/configuration/config/code-generator/get-code-generator-res'
-import { AppType } from '@/types/app'
+import { AppModeEnum } from '@/types/app'
 import { useHooksStore } from '../hooks-store'
 import { useCallback, useMemo } from 'react'
-import { useNodesInteractions } from '../hooks'
+import { useNodesInteractions, useToolIcon } from '../hooks'
 import { CodeLanguage } from '../nodes/code/types'
 import useNodeCrud from '../nodes/_base/hooks/use-node-crud'
 import type { GenRes } from '@/service/debug'
-import produce from 'immer'
+import { produce } from 'immer'
 import { PROMPT_EDITOR_UPDATE_VALUE_BY_EVENT_EMITTER } from '../../base/prompt-editor/plugins/update-block'
 import { useEventEmitterContextContext } from '@/context/event-emitter'
 import { VariableIconWithColor } from '@/app/components/workflow/nodes/_base/components/variable/variable-label'
@@ -52,6 +53,9 @@ const Right = ({
   const bottomPanelWidth = useStore(s => s.bottomPanelWidth)
   const setShowVariableInspectPanel = useStore(s => s.setShowVariableInspectPanel)
   const setCurrentFocusNodeId = useStore(s => s.setCurrentFocusNodeId)
+  const toolIcon = useToolIcon(currentNodeVar?.nodeData)
+  const isTruncated = currentNodeVar?.var.is_truncated
+  const fullContent = currentNodeVar?.var.full_content
 
   const {
     resetConversationVar,
@@ -151,6 +155,9 @@ const Right = ({
     } as any)
     handleHidePromptGenerator()
   }, [setInputs, blockType, nodeId, node?.data, handleHidePromptGenerator])
+
+  const displaySchemaType = currentNodeVar?.var.schemaType ? (`(${currentNodeVar.var.schemaType})`) : ''
+
   return (
     <div className={cn('flex h-full flex-col')}>
       {/* header */}
@@ -171,19 +178,32 @@ const Right = ({
                   />
                 )
               }
-              {currentNodeVar.nodeType !== VarInInspectType.environment && currentNodeVar.nodeType !== VarInInspectType.conversation && currentNodeVar.nodeType !== VarInInspectType.system && (
-                <>
-                  <BlockIcon
-                    className='shrink-0'
-                    type={currentNodeVar.nodeType as BlockEnum}
-                    size='xs'
-                  />
-                  <div className='system-sm-regular shrink-0 text-text-secondary'>{currentNodeVar.title}</div>
-                  <div className='system-sm-regular shrink-0 text-text-quaternary'>/</div>
-                </>
-              )}
+              {currentNodeVar.nodeType !== VarInInspectType.environment
+                && currentNodeVar.nodeType !== VarInInspectType.conversation
+                && currentNodeVar.nodeType !== VarInInspectType.system
+                && (
+                  <>
+                    <BlockIcon
+                      className='shrink-0'
+                      type={currentNodeVar.nodeType as BlockEnum}
+                      size='xs'
+                      toolIcon={toolIcon}
+                    />
+                    <div className='system-sm-regular shrink-0 text-text-secondary'>{currentNodeVar.title}</div>
+                    <div className='system-sm-regular shrink-0 text-text-quaternary'>/</div>
+                  </>
+                )}
               <div title={currentNodeVar.var.name} className='system-sm-semibold truncate text-text-secondary'>{currentNodeVar.var.name}</div>
-              <div className='system-xs-medium ml-1 shrink-0 text-text-tertiary'>{currentNodeVar.var.value_type}</div>
+              <div className='system-xs-medium ml-1 shrink-0 space-x-2 text-text-tertiary'>
+                <span>{`${currentNodeVar.var.value_type}${displaySchemaType}`}</span>
+                {isTruncated && (
+                  <>
+                    <span>·</span>
+                    <span>{((fullContent?.size_bytes || 0) / 1024 / 1024).toFixed(1)}MB</span>
+                  </>
+                )}
+              </div>
+
             </>
           )}
         </div>
@@ -200,20 +220,32 @@ const Right = ({
                   </div>
                 </Tooltip>
               )}
-              {currentNodeVar.var.edited && (
+              {isTruncated && (
+                <Tooltip popupContent={t('workflow.debug.variableInspect.exportToolTip')}>
+                  <ActionButton>
+                    <a
+                      href={fullContent?.download_url}
+                      target='_blank'
+                    >
+                      <RiFileDownloadFill className='size-4' />
+                    </a>
+                  </ActionButton>
+                </Tooltip>
+              )}
+              {!isTruncated && currentNodeVar.var.edited && (
                 <Badge>
                   <span className='ml-[2.5px] mr-[4.5px] h-[3px] w-[3px] rounded bg-text-accent-secondary'></span>
                   <span className='system-2xs-semibold-uupercase'>{t('workflow.debug.variableInspect.edited')}</span>
                 </Badge>
               )}
-              {currentNodeVar.var.edited && currentNodeVar.var.type !== VarInInspectType.conversation && (
+              {!isTruncated && currentNodeVar.var.edited && currentNodeVar.var.type !== VarInInspectType.conversation && (
                 <Tooltip popupContent={t('workflow.debug.variableInspect.reset')}>
                   <ActionButton onClick={resetValue}>
                     <RiArrowGoBackLine className='h-4 w-4' />
                   </ActionButton>
                 </Tooltip>
               )}
-              {currentNodeVar.var.edited && currentNodeVar.var.type === VarInInspectType.conversation && (
+              {!isTruncated && currentNodeVar.var.edited && currentNodeVar.var.type === VarInInspectType.conversation && (
                 <Tooltip popupContent={t('workflow.debug.variableInspect.resetConversationVar')}>
                   <ActionButton onClick={handleClear}>
                     <RiArrowGoBackLine className='h-4 w-4' />
@@ -238,13 +270,19 @@ const Right = ({
             <Loading />
           </div>
         )}
-        {currentNodeVar && !isValueFetching && <ValueContent currentVar={currentNodeVar.var} handleValueChange={handleValueChange} />}
+        {currentNodeVar && !isValueFetching && (
+          <ValueContent
+            currentVar={currentNodeVar.var}
+            handleValueChange={handleValueChange}
+            isTruncated={!!isTruncated}
+          />
+        )}
       </div>
       {isShowPromptGenerator && (
         isCodeBlock
           ? <GetCodeGeneratorResModal
             isShow
-            mode={AppType.chat}
+            mode={AppModeEnum.CHAT}
             onClose={handleHidePromptGenerator}
             flowId={configsMap?.flowId || ''}
             nodeId={nodeId}
@@ -253,7 +291,7 @@ const Right = ({
             onFinished={handleUpdatePrompt}
           />
           : <GetAutomaticResModal
-            mode={AppType.chat}
+            mode={AppModeEnum.CHAT}
             isShow
             onClose={handleHidePromptGenerator}
             onFinished={handleUpdatePrompt}

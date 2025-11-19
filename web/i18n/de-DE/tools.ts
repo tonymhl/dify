@@ -2,7 +2,6 @@ const translation = {
   title: 'Werkzeuge',
   createCustomTool: 'Eigenes Werkzeug erstellen',
   type: {
-    all: 'Alle',
     builtIn: 'Integriert',
     custom: 'Benutzerdefiniert',
     workflow: 'Arbeitsablauf',
@@ -20,7 +19,6 @@ const translation = {
     setupModalTitleDescription: 'Nach der Konfiguration der Anmeldeinformationen können alle Mitglieder im Arbeitsbereich dieses Werkzeug beim Orchestrieren von Anwendungen nutzen.',
   },
   includeToolNum: '{{num}} Werkzeuge inkludiert',
-  addTool: 'Werkzeug hinzufügen',
   createTool: {
     title: 'Eigenes Werkzeug erstellen',
     editAction: 'Konfigurieren',
@@ -143,9 +141,7 @@ const translation = {
   addToolModal: {
     type: 'Art',
     category: 'Kategorie',
-    add: 'hinzufügen',
     added: 'zugefügt',
-    manageInTools: 'Verwalten in Tools',
     custom: {
       title: 'Kein benutzerdefiniertes Werkzeug verfügbar',
       tip: 'Benutzerdefiniertes Werkzeug erstellen',
@@ -193,6 +189,22 @@ const translation = {
       confirm: 'Hinzufügen & Autorisieren',
       sseReadTimeout: 'SSE-Lesezeitüberschreitung',
       timeout: 'Zeitüberschreitung',
+      headers: 'Kopfzeilen',
+      timeoutPlaceholder: 'dreißig',
+      headerKeyPlaceholder: 'z.B., Autorisierung',
+      addHeader: 'Kopfzeile hinzufügen',
+      headerValuePlaceholder: 'z.B., Träger Token123',
+      headerValue: 'Header-Wert',
+      headerKey: 'Kopfzeilenname',
+      noHeaders: 'Keine benutzerdefinierten Header konfiguriert',
+      maskedHeadersTip: 'Headerwerte sind zum Schutz maskiert. Änderungen werden die tatsächlichen Werte aktualisieren.',
+      headersTip: 'Zusätzliche HTTP-Header, die mit MCP-Serveranfragen gesendet werden sollen',
+      clientSecret: 'Client-Geheimnis',
+      clientSecretPlaceholder: 'Client-Geheimnis',
+      clientID: 'Kunden-ID',
+      authentication: 'Authentifizierung',
+      useDynamicClientRegistration: 'Dynamische Client-Registrierung verwenden',
+      configurations: 'Konfigurationen',
     },
     delete: 'MCP-Server entfernen',
     deleteConfirmTitle: 'Möchten Sie {{mcp}} entfernen?',
@@ -233,7 +245,12 @@ const translation = {
       },
       publishTip: 'App nicht veröffentlicht. Bitte zuerst die App veröffentlichen.',
     },
+    toolItem: {
+      parameters: 'Parameter',
+      noDescription: 'Keine Beschreibung',
+    },
   },
+  allTools: 'Alle Werkzeuge',
 }
 
 export default translation

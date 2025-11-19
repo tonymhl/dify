@@ -61,6 +61,10 @@ const translation = {
     selectAll: 'Выбрать все',
     deSelectAll: 'Снять выделение со всех',
     config: 'Конфигурация',
+    yes: 'Да',
+    no: 'Нет',
+    deleteConfirmTitle: 'Удалить?',
+    confirmAction: 'Пожалуйста, подтвердите ваше действие.',
   },
   errorMsg: {
     fieldRequired: '{{field}} обязательно',
@@ -161,7 +165,6 @@ const translation = {
     workspace: 'Рабочее пространство',
     createWorkspace: 'Создать рабочее пространство',
     helpCenter: 'Помощь',
-    communityFeedback: 'Обратная связь',
     roadmap: 'План развития',
     community: 'Сообщество',
     about: 'О нас',
@@ -169,6 +172,8 @@ const translation = {
     github: 'ГитХаб',
     compliance: 'Соблюдение',
     support: 'Поддержка',
+    contactUs: 'Свяжитесь с нами',
+    forum: 'Форум',
   },
   settings: {
     accountGroup: 'АККАУНТ',
@@ -494,7 +499,18 @@ const translation = {
       configLoadBalancing: 'Конфигурация балансировки нагрузки',
       providerManagedTip: 'Текущая конфигурация размещена у провайдера.',
       specifyModelCredentialTip: 'Используйте конфигурированные учетные данные модели.',
+      removeModel: 'Удалить модель',
+      addModel: 'Добавить модель',
+      modelCredential: 'Удостоверение модели',
+      editModelCredential: 'Редактирование учетных данных модели',
+      selectModelCredential: 'Выбор учетных данных модели',
+      addNewModelCredential: 'Добавление новых учетных данных модели',
+      customModelCredentials: 'Учетные данные пользовательской модели',
+      manageCredentials: 'Управление учетными данными',
+      customModelCredentialsDeleteTip: 'Учетные данные используются и не могут быть удалены',
     },
+    parametersInvalidRemoved: 'Некоторые параметры недействительны и были удалены',
+    installDataSourceProvider: 'Установить поставщиков источников данных',
   },
   dataSource: {
     add: 'Добавить источник данных',
@@ -593,6 +609,7 @@ const translation = {
     viewDoc: 'Просмотреть документацию',
     relatedApp: 'связанные приложения',
     noRelatedApp: 'Нет связанных приложений',
+    pipeline: 'Трубопровод',
   },
   voiceInput: {
     speaking: 'Говорите сейчас...',
@@ -709,6 +726,7 @@ const translation = {
     pasteFileLinkInvalid: 'Неверная ссылка на файл',
     uploadFromComputerLimit: 'Файл загрузки не может превышать {{size}}',
     uploadFromComputerUploadError: 'Загрузка файла не удалась, пожалуйста, загрузите еще раз.',
+    fileExtensionBlocked: 'Этот тип файла заблокирован по соображениям безопасности',
   },
   license: {
     expiring: 'Срок действия истекает за один день',
@@ -747,6 +765,9 @@ const translation = {
     content: 'Содержимое обратной связи',
     placeholder: 'Пожалуйста, опишите, что пошло не так или как мы можем улучшиться...',
     subtitle: 'Пожалуйста, сообщите нам, что пошло не так с этим ответом',
+  },
+  label: {
+    optional: '(необязательно)',
   },
 }
 

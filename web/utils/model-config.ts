@@ -61,6 +61,17 @@ export const userInputsFormToPromptVariables = (useInputs: UserInputFormItem[] |
         default: content.default,
       })
     }
+    else if (type === 'boolean') {
+      promptVariables.push({
+        key: content.variable,
+        name: content.label,
+        required: content.required,
+        type: 'checkbox',
+        options: [],
+        hide: content.hide,
+        default: content.default,
+      })
+    }
     else if (type === 'select') {
       promptVariables.push({
         key: content.variable,
@@ -187,9 +198,9 @@ export const promptVariablesToUserInputsForm = (promptVariables: PromptVariable[
 export const formatBooleanInputs = (useInputs?: PromptVariable[] | null, inputs?: Record<string, string | number | object | boolean> | null) => {
   if(!useInputs)
     return inputs
-  const res = { ...(inputs || {}) }
+  const res = { ...inputs }
   useInputs.forEach((item) => {
-    const isBooleanInput = item.type === 'boolean'
+    const isBooleanInput = item.type === 'checkbox'
     if (isBooleanInput) {
       // Convert boolean inputs to boolean type
       res[item.key] = !!res[item.key]

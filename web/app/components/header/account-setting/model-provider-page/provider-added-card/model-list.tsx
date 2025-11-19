@@ -16,7 +16,10 @@ import {
 import ModelListItem from './model-list-item'
 import { useModalContextSelector } from '@/context/modal-context'
 import { useAppContext } from '@/context/app-context'
-import { AddCustomModel } from '@/app/components/header/account-setting/model-provider-page/model-auth'
+import {
+  AddCustomModel,
+  ManageCustomModelCredentials,
+} from '@/app/components/header/account-setting/model-provider-page/model-auth'
 
 type ModelListProps = {
   provider: ModelProvider
@@ -67,6 +70,10 @@ const ModelList: FC<ModelListProps> = ({
           {
             isConfigurable && isCurrentWorkspaceManager && (
               <div className='flex grow justify-end'>
+                <ManageCustomModelCredentials
+                  provider={provider}
+                  currentCustomConfigurationModelFixedFields={undefined}
+                />
                 <AddCustomModel
                   provider={provider}
                   configurationMethod={ConfigurationMethodEnum.customizableModel}
@@ -79,7 +86,7 @@ const ModelList: FC<ModelListProps> = ({
         {
           models.map(model => (
             <ModelListItem
-              key={`${model.model}-${model.fetch_from}`}
+              key={`${model.model}-${model.model_type}-${model.fetch_from}`}
               {...{
                 model,
                 provider,

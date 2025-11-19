@@ -3,7 +3,6 @@ const translation = {
   createCustomTool: 'ایجاد ابزار سفارشی',
   customToolTip: 'بیشتر در مورد ابزارهای سفارشی Dify بیاموزید',
   type: {
-    all: 'همه',
     builtIn: 'سفارشی شده',
     custom: 'سفارشی',
     workflow: 'جریان کار',
@@ -21,13 +20,10 @@ const translation = {
     setupModalTitleDescription: 'پس از پیکربندی اعتبارنامه‌ها، همه اعضای موجود در فضای کاری می‌توانند از این ابزار هنگام هماهنگی برنامه‌ها استفاده کنند.',
   },
   includeToolNum: '{{num}} ابزار شامل شد',
-  addTool: 'افزودن ابزار',
   addToolModal: {
     type: 'نوع',
     category: 'دسته‌بندی',
-    add: 'افزودن',
     added: 'افزوده شد',
-    manageInTools: 'مدیریت در ابزارها',
     custom: {
       title: 'هیچ ابزار سفارشی موجود نیست',
       tip: 'یک ابزار سفارشی ایجاد کنید',
@@ -193,6 +189,22 @@ const translation = {
       confirm: 'افزودن و مجوزدهی',
       timeout: 'مهلت',
       sseReadTimeout: 'زمان.out خواندن SSE',
+      headers: 'هدرها',
+      timeoutPlaceholder: '30',
+      headerKey: 'نام هدر',
+      headerValue: 'مقدار هدر',
+      addHeader: 'هدر اضافه کنید',
+      headerKeyPlaceholder: 'Authorization',
+      headerValuePlaceholder: 'مثلاً، Bearer 123',
+      noHeaders: 'هیچ هدر سفارشی پیکربندی نشده است',
+      headersTip: 'هدرهای HTTP اضافی برای ارسال با درخواست‌های سرور MCP',
+      maskedHeadersTip: 'مقدارهای هدر به خاطر امنیت مخفی شده‌اند. تغییرات مقادیر واقعی را به‌روزرسانی خواهد کرد.',
+      authentication: 'احراز هویت',
+      configurations: 'تنظیمات',
+      clientSecretPlaceholder: 'رمز مشتری',
+      clientID: 'شناسه مشتری',
+      clientSecret: 'رمز مشتری',
+      useDynamicClientRegistration: 'استفاده از ثبت‌نام پویا برای مشتری',
     },
     delete: 'حذف سرور MCP',
     deleteConfirmTitle: 'آیا مایل به حذف {mcp} هستید؟',
@@ -233,7 +245,12 @@ const translation = {
       },
       publishTip: 'برنامه منتشر نشده است. لطفاً ابتدا برنامه را منتشر کنید.',
     },
+    toolItem: {
+      parameters: 'پارامترها',
+      noDescription: 'بدون توضیح',
+    },
   },
+  allTools: 'همه ابزارها',
 }
 
 export default translation

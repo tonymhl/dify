@@ -65,10 +65,12 @@ export const useMarketplacePlugins = () => {
   } = useMutationPluginsFromMarketplace()
 
   const [prevPlugins, setPrevPlugins] = useState<Plugin[] | undefined>()
+
   const resetPlugins = useCallback(() => {
     reset()
     setPrevPlugins(undefined)
   }, [reset])
+
   const handleUpdatePlugins = useCallback((pluginsSearchParams: PluginsSearchParams) => {
     mutateAsync(pluginsSearchParams).then((res) => {
       const currentPage = pluginsSearchParams.page || 1
@@ -85,9 +87,6 @@ export const useMarketplacePlugins = () => {
       }
     })
   }, [mutateAsync])
-  const queryPlugins = useCallback((pluginsSearchParams: PluginsSearchParams) => {
-    handleUpdatePlugins(pluginsSearchParams)
-  }, [handleUpdatePlugins])
 
   const { run: queryPluginsWithDebounced, cancel: cancelQueryPluginsWithDebounced } = useDebounceFn((pluginsSearchParams: PluginsSearchParams) => {
     handleUpdatePlugins(pluginsSearchParams)
@@ -99,17 +98,20 @@ export const useMarketplacePlugins = () => {
     plugins: prevPlugins,
     total: data?.data?.total,
     resetPlugins,
-    queryPlugins,
+    queryPlugins: handleUpdatePlugins,
     queryPluginsWithDebounced,
     cancelQueryPluginsWithDebounced,
     isLoading: isPending,
   }
 }
 
+/**
+ * ! Support zh-Hans, pt-BR, ja-JP and en-US for Marketplace page
+ * ! For other languages, use en-US as fallback
+ */
 export const useMixedTranslation = (localeFromOuter?: string) => {
   let t = useTranslation().t
 
-  // !localeFromOuter only support zh-Hans and en-US for now
   if (localeFromOuter)
     t = i18n.getFixedT(localeFromOuter)
 

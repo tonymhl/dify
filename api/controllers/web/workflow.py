@@ -3,7 +3,7 @@ import logging
 from flask_restx import reqparse
 from werkzeug.exceptions import InternalServerError
 
-from controllers.web import api
+from controllers.web import web_ns
 from controllers.web.error import (
     CompletionRequestError,
     NotWorkflowAppError,
@@ -21,6 +21,7 @@ from core.errors.error import (
     QuotaExceededError,
 )
 from core.model_runtime.errors.invoke import InvokeError
+from core.workflow.graph_engine.manager import GraphEngineManager
 from libs import helper
 from models.model import App, AppMode, EndUser
 from services.app_generate_service import AppGenerateService
@@ -29,16 +30,17 @@ from services.errors.llm import InvokeRateLimitError
 logger = logging.getLogger(__name__)
 
 
+@web_ns.route("/workflows/run")
 class WorkflowRunApi(WebApiResource):
-    @api.doc("Run Workflow")
-    @api.doc(description="Execute a workflow with provided inputs and files.")
-    @api.doc(
+    @web_ns.doc("Run Workflow")
+    @web_ns.doc(description="Execute a workflow with provided inputs and files.")
+    @web_ns.doc(
         params={
             "inputs": {"description": "Input variables for the workflow", "type": "object", "required": True},
             "files": {"description": "Files to be processed by the workflow", "type": "array", "required": False},
         }
     )
-    @api.doc(
+    @web_ns.doc(
         responses={
             200: "Success",
             400: "Bad Request",
@@ -56,9 +58,11 @@ class WorkflowRunApi(WebApiResource):
         if app_mode != AppMode.WORKFLOW:
             raise NotWorkflowAppError()
 
-        parser = reqparse.RequestParser()
-        parser.add_argument("inputs", type=dict, required=True, nullable=False, location="json")
-        parser.add_argument("files", type=list, required=False, location="json")
+        parser = (
+            reqparse.RequestParser()
+            .add_argument("inputs", type=dict, required=True, nullable=False, location="json")
+            .add_argument("files", type=list, required=False, location="json")
+        )
         args = parser.parse_args()
 
         try:
@@ -84,15 +88,16 @@ class WorkflowRunApi(WebApiResource):
             raise InternalServerError()
 
 
+@web_ns.route("/workflows/tasks/<string:task_id>/stop")
 class WorkflowTaskStopApi(WebApiResource):
-    @api.doc("Stop Workflow Task")
-    @api.doc(description="Stop a running workflow task.")
-    @api.doc(
+    @web_ns.doc("Stop Workflow Task")
+    @web_ns.doc(description="Stop a running workflow task.")
+    @web_ns.doc(
         params={
             "task_id": {"description": "Task ID to stop", "type": "string", "required": True},
         }
     )
-    @api.doc(
+    @web_ns.doc(
         responses={
             200: "Success",
             400: "Bad Request",
@@ -110,10 +115,11 @@ class WorkflowTaskStopApi(WebApiResource):
         if app_mode != AppMode.WORKFLOW:
             raise NotWorkflowAppError()
 
-        AppQueueManager.set_stop_flag(task_id, InvokeFrom.WEB_APP, end_user.id)
+        # Stop using both mechanisms for backward compatibility
+        # Legacy stop flag mechanism (without user check)
+        AppQueueManager.set_stop_flag_no_user_check(task_id)
+
+        # New graph engine command channel mechanism
+        GraphEngineManager.send_stop_command(task_id)
 
         return {"result": "success"}
-
-
-api.add_resource(WorkflowRunApi, "/workflows/run")
-api.add_resource(WorkflowTaskStopApi, "/workflows/tasks/<string:task_id>/stop")

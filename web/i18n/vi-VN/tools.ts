@@ -2,7 +2,6 @@ const translation = {
   title: 'Công cụ',
   createCustomTool: 'Tạo công cụ tùy chỉnh',
   type: {
-    all: 'Tất cả',
     builtIn: 'Tích hợp sẵn',
     custom: 'Tùy chỉnh',
     workflow: 'Quy trình làm việc',
@@ -20,7 +19,6 @@ const translation = {
     setupModalTitleDescription: 'Sau khi cấu hình thông tin đăng nhập, tất cả thành viên trong không gian làm việc có thể sử dụng công cụ này khi triển khai ứng dụng.',
   },
   includeToolNum: 'Bao gồm {{num}} công cụ',
-  addTool: 'Thêm công cụ',
   createTool: {
     title: 'Tạo công cụ tùy chỉnh',
     editAction: 'Cấu hình',
@@ -142,9 +140,7 @@ const translation = {
   howToGet: 'Cách nhận',
   addToolModal: {
     category: 'loại',
-    manageInTools: 'Quản lý trong Công cụ',
     type: 'kiểu',
-    add: 'thêm',
     added: 'Thêm',
     custom: {
       title: 'Không có công cụ tùy chỉnh nào',
@@ -193,6 +189,22 @@ const translation = {
       confirm: 'Thêm & Ủy quyền',
       sseReadTimeout: 'Thời gian chờ Đọc SSE',
       timeout: 'Thời gian chờ',
+      headerKeyPlaceholder: 'ví dụ, Ủy quyền',
+      timeoutPlaceholder: 'ba mươi',
+      addHeader: 'Thêm tiêu đề',
+      headers: 'Tiêu đề',
+      headerValuePlaceholder: 'ví dụ: mã thông báo Bearer123',
+      headerKey: 'Tên tiêu đề',
+      noHeaders: 'Không có tiêu đề tùy chỉnh nào được cấu hình',
+      headerValue: 'Giá trị tiêu đề',
+      maskedHeadersTip: 'Các giá trị tiêu đề được mã hóa để đảm bảo an ninh. Các thay đổi sẽ cập nhật các giá trị thực tế.',
+      headersTip: 'Các tiêu đề HTTP bổ sung để gửi cùng với các yêu cầu máy chủ MCP',
+      authentication: 'Xác thực',
+      clientSecret: 'Bí mật của khách hàng',
+      clientID: 'ID khách hàng',
+      configurations: 'Cấu hình',
+      useDynamicClientRegistration: 'Sử dụng Đăng ký Khách hàng Động',
+      clientSecretPlaceholder: 'Bí mật của khách hàng',
     },
     delete: 'Xóa Máy chủ MCP',
     deleteConfirmTitle: 'Xóa {mcp}?',
@@ -233,7 +245,12 @@ const translation = {
       },
       publishTip: 'Ứng dụng chưa xuất bản. Vui lòng xuất bản ứng dụng trước.',
     },
+    toolItem: {
+      parameters: 'Các thông số',
+      noDescription: 'Không có mô tả',
+    },
   },
+  allTools: 'Tất cả các công cụ',
 }
 
 export default translation

@@ -3,7 +3,6 @@ const translation = {
   createCustomTool: 'Crea Strumento Personalizzato',
   customToolTip: 'Scopri di più sugli strumenti personalizzati di Dify',
   type: {
-    all: 'Tutti',
     builtIn: 'Integrato',
     custom: 'Personalizzato',
     workflow: 'Flusso di lavoro',
@@ -22,13 +21,10 @@ const translation = {
       'Dopo aver configurato le credenziali, tutti i membri all\'interno del workspace possono utilizzare questo strumento durante l\'orchestrazione delle applicazioni.',
   },
   includeToolNum: '{{num}} strumenti inclusi',
-  addTool: 'Aggiungi Strumento',
   addToolModal: {
     type: 'tipo',
     category: 'categoria',
-    add: 'aggiungi',
     added: 'aggiunto',
-    manageInTools: 'Gestisci in Strumenti',
     custom: {
       title: 'Nessuno strumento personalizzato disponibile',
       tip: 'Crea uno strumento personalizzato',
@@ -203,6 +199,22 @@ const translation = {
       confirm: 'Aggiungi & Autorizza',
       timeout: 'Tempo scaduto',
       sseReadTimeout: 'Timeout di lettura SSE',
+      headerKey: 'Nome intestazione',
+      timeoutPlaceholder: 'trenta',
+      headers: 'Intestazioni',
+      addHeader: 'Aggiungi intestazione',
+      noHeaders: 'Nessuna intestazione personalizzata configurata',
+      headerKeyPlaceholder: 'ad es., Autorizzazione',
+      headerValue: 'Valore dell\'intestazione',
+      headerValuePlaceholder: 'ad esempio, Token di accesso123',
+      headersTip: 'Intestazioni HTTP aggiuntive da inviare con le richieste al server MCP',
+      maskedHeadersTip: 'I valori dell\'intestazione sono mascherati per motivi di sicurezza. Le modifiche aggiorneranno i valori effettivi.',
+      clientID: 'ID cliente',
+      clientSecret: 'Segreto del Cliente',
+      useDynamicClientRegistration: 'Usa la Registrazione Dinamica del Client',
+      clientSecretPlaceholder: 'Segreto del Cliente',
+      authentication: 'Autenticazione',
+      configurations: 'Configurazioni',
     },
     delete: 'Rimuovi Server MCP',
     deleteConfirmTitle: 'Vuoi rimuovere {mcp}?',
@@ -243,7 +255,12 @@ const translation = {
       },
       publishTip: 'App non pubblicata. Pubblica l\'app prima.',
     },
+    toolItem: {
+      parameters: 'Parametri',
+      noDescription: 'Nessuna descrizione',
+    },
   },
+  allTools: 'Tutti gli strumenti',
 }
 
 export default translation

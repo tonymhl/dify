@@ -273,7 +273,6 @@ const translation = {
   variableTable: {
     key: 'Ключ змінної', // Variable Key
     name: 'Назва поля для введення користувача', // User Input Field Name
-    optional: 'Додатково', // Optional
     type: 'Тип введення', // Input Type
     action: 'Дії', // Actions
     typeString: 'Рядок', // String
@@ -352,6 +351,19 @@ const translation = {
     'optional': 'додатковий',
     'json': 'JSON Код',
     'checkbox': 'Чекбокс',
+    'unit': 'Одиниці',
+    'placeholder': 'Заповнювач',
+    'noDefaultSelected': 'Не вибирати',
+    'startChecked': 'Почати перевірено',
+    'displayName': 'Відображуване ім\'я',
+    'uploadMethod': 'Спосіб завантаження',
+    'showAllSettings': 'Показати всі налаштування',
+    'startSelectedOption': 'Почати вибраний варіант',
+    'tooltips': 'Спливаючі чтива',
+    'placeholderPlaceholder': 'Введіть текст для відображення, коли поле порожнє',
+    'unitPlaceholder': 'Показувати одиниці виміру після чисел, наприклад токени',
+    'defaultValuePlaceholder': 'Введіть значення за замовчуванням, щоб попередньо заповнити поле',
+    'tooltipsPlaceholder': 'Введіть корисний текст, який відображається при наведенні курсору на мітку',
   },
   vision: {
     // Vision

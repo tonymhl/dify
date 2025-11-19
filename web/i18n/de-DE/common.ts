@@ -61,6 +61,10 @@ const translation = {
     selectAll: 'Alles auswählen',
     deSelectAll: 'Alle abwählen',
     config: 'Konfiguration',
+    yes: 'Ja',
+    deleteConfirmTitle: 'Löschen?',
+    no: 'Nein',
+    confirmAction: 'Bitte bestätigen Sie Ihre Aktion.',
   },
   placeholder: {
     input: 'Bitte eingeben',
@@ -157,7 +161,6 @@ const translation = {
     workspace: 'Arbeitsbereich',
     createWorkspace: 'Arbeitsbereich erstellen',
     helpCenter: 'Hilfe',
-    communityFeedback: 'Rückmeldung',
     roadmap: 'Fahrplan',
     community: 'Gemeinschaft',
     about: 'Über',
@@ -165,6 +168,8 @@ const translation = {
     compliance: 'Einhaltung',
     support: 'Unterstützung',
     github: 'GitHub',
+    contactUs: 'Kontaktieren Sie uns',
+    forum: 'Forum',
   },
   settings: {
     accountGroup: 'KONTO',
@@ -490,7 +495,18 @@ const translation = {
       providerManagedTip: 'Die aktuelle Konfiguration wird vom Anbieter gehostet.',
       configLoadBalancing: 'Konfiguration Lastenverteilung',
       specifyModelCredentialTip: 'Verwenden Sie ein konfiguriertes Modellzugang.',
+      manageCredentials: 'Anmeldeinformationen verwalten',
+      selectModelCredential: 'Wählen Sie eine Modellberechtigung aus',
+      modelCredential: 'Zeugnis des Modells',
+      addModel: 'Modell hinzufügen',
+      customModelCredentials: 'Anmeldeinformationen für benutzerdefinierte Modelle',
+      removeModel: 'Modell entfernen',
+      addNewModelCredential: 'Hinzufügen neuer Modellanmeldeinformationen',
+      editModelCredential: 'Bearbeiten von Modellanmeldeinformationen',
+      customModelCredentialsDeleteTip: 'Anmeldeinformationen werden verwendet und können nicht gelöscht werden',
     },
+    parametersInvalidRemoved: 'Einige Parameter sind ungültig und wurden entfernt.',
+    installDataSourceProvider: 'Datenquellenanbieter installieren',
   },
   dataSource: {
     add: 'Eine Datenquelle hinzufügen',
@@ -589,6 +605,7 @@ const translation = {
     viewDoc: 'Dokumentation anzeigen',
     relatedApp: 'verbundene Apps',
     noRelatedApp: 'Keine verknüpften Apps',
+    pipeline: 'Rohrleitung',
   },
   voiceInput: {
     speaking: 'Sprechen Sie jetzt...',
@@ -709,6 +726,7 @@ const translation = {
     uploadFromComputerLimit: 'Datei hochladen darf {{size}} nicht überschreiten',
     uploadFromComputerReadError: 'Lesen der Datei fehlgeschlagen, bitte versuchen Sie es erneut.',
     fileExtensionNotSupport: 'Dateiendung nicht bedient',
+    fileExtensionBlocked: 'Dieser Dateityp ist aus Sicherheitsgründen gesperrt',
   },
   license: {
     expiring: 'Läuft an einem Tag ab',
@@ -747,6 +765,9 @@ const translation = {
     title: 'Feedback geben',
     subtitle: 'Bitte sagen Sie uns, was mit dieser Antwort falsch gelaufen ist.',
     placeholder: 'Bitte beschreiben Sie, was schiefgelaufen ist oder wie wir uns verbessern können...',
+  },
+  label: {
+    optional: '(fakultativ)',
   },
 }
 

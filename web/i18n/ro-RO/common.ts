@@ -61,6 +61,10 @@ const translation = {
     deSelectAll: 'Deselectați tot',
     selectAll: 'Selectați tot',
     config: 'Configurație',
+    yes: 'Da',
+    deleteConfirmTitle: 'Ștergere?',
+    no: 'Nu',
+    confirmAction: 'Vă rugăm să confirmați acțiunea dumneavoastră.',
   },
   placeholder: {
     input: 'Vă rugăm să introduceți',
@@ -157,7 +161,6 @@ const translation = {
     workspace: 'Spațiu de lucru',
     createWorkspace: 'Creează Spațiu de lucru',
     helpCenter: 'Ajutor',
-    communityFeedback: 'Feedback',
     roadmap: 'Plan de acțiune',
     community: 'Comunitate',
     about: 'Despre',
@@ -165,6 +168,8 @@ const translation = {
     github: 'GitHub',
     support: 'Suport',
     compliance: 'Conformitate',
+    contactUs: 'Contactați-ne',
+    forum: 'Forum',
   },
   settings: {
     accountGroup: 'CONT',
@@ -490,7 +495,18 @@ const translation = {
       providerManagedTip: 'Configurarea curentă este găzduită de furnizor.',
       modelCredentials: 'Credențiale model',
       specifyModelCredentialTip: 'Utilizați un acreditiv de model configurat.',
+      addNewModelCredential: 'Adăugați acreditive noi pentru model',
+      modelCredential: 'Model de acreditare',
+      removeModel: 'Eliminați modelul',
+      addModel: 'Adăugați model',
+      selectModelCredential: 'Selectați o acreditare model',
+      editModelCredential: 'Editarea acreditării modelului',
+      customModelCredentials: 'Acreditări model personalizate',
+      manageCredentials: 'Gestionați acreditările',
+      customModelCredentialsDeleteTip: 'Acreditarea este în uz și nu poate fi ștearsă',
     },
+    parametersInvalidRemoved: 'Unele parametrii sunt invalizi și au fost eliminați.',
+    installDataSourceProvider: 'Instalați furnizorii de surse de date',
   },
   dataSource: {
     add: 'Adăugați o sursă de date',
@@ -589,6 +605,7 @@ const translation = {
     viewDoc: 'Vizualizați documentația',
     relatedApp: 'aplicații asociate',
     noRelatedApp: 'Fără aplicații conectate',
+    pipeline: 'Pipeline',
   },
   voiceInput: {
     speaking: 'Vorbiți acum...',
@@ -709,6 +726,7 @@ const translation = {
     pasteFileLinkInvalid: 'Link fișier nevalid',
     uploadFromComputerLimit: 'Încărcarea fișierului nu poate depăși {{size}}',
     pasteFileLink: 'Lipiți linkul fișierului',
+    fileExtensionBlocked: 'Acest tip de fișier este blocat din motive de securitate',
   },
   license: {
     expiring: 'Expiră într-o zi',
@@ -747,6 +765,9 @@ const translation = {
     subtitle: 'Te rog să ne spui ce a mers prost cu acest răspuns',
     placeholder: 'Vă rugăm să descrieți ce a mers prost sau cum putem îmbunătăți...',
     title: 'Oferiți feedback',
+  },
+  label: {
+    optional: '(opțional)',
   },
 }
 

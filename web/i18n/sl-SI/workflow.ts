@@ -18,8 +18,7 @@ const translation = {
     },
     versionHistory: 'Zgodovina različic',
     published: 'Objavljeno',
-    run: 'Teči',
-    featuresDocLink: 'Nauči se več',
+    run: 'Testni tek',
     notRunning: 'Še ne teče',
     exportImage: 'Izvozi sliko',
     openInExplore: 'Odpri v Raziskovanju',
@@ -42,7 +41,7 @@ const translation = {
     inPreview: 'V predogledu',
     workflowAsToolTip: 'Zaradi posodobitve delovnega poteka je potrebna ponovna konfiguracija orodja.',
     variableNamePlaceholder: 'Ime spremenljivke',
-    needEndNode: 'Skrivnostna vozlišča je treba dodati.',
+    needOutputNode: 'Dodati je treba izhodiščno vozlišče',
     onFailure: 'O neuspehu',
     embedIntoSite: 'Vstavite v spletno stran',
     conversationLog: 'Pogovor Log',
@@ -77,13 +76,10 @@ const translation = {
     fileUploadTip: 'Funkcije nalaganja slik so bile nadgrajene na nalaganje datotek.',
     backupCurrentDraft: 'Varnostno kopiraj trenutni osnutek',
     overwriteAndImport: 'Prepiši in uvozi',
-    features: 'Značilnosti',
     exportPNG: 'Izvozi kot PNG',
-    parallelRun: 'Paralelni tek',
     chooseDSL: 'Izberi DSL datoteko',
     unpublished: 'Nepublikirano',
     pasteHere: 'Prilepite tukaj',
-    featuresDescription: 'Izboljšanje uporabniške izkušnje spletne aplikacije',
     exitVersions: 'Izhodne različice',
     editing: 'Urejanje',
     addFailureBranch: 'Dodaj neuspešno vejo',
@@ -116,6 +112,7 @@ const translation = {
     tagBound: 'Število aplikacij, ki uporabljajo to oznako',
     currentView: 'Trenutni pogled',
     currentWorkflow: 'Trenutni potek dela',
+    moreActions: 'Več dejanj',
   },
   env: {
     modal: {
@@ -139,6 +136,19 @@ const translation = {
     envPanelTitle: 'Spremenljivke okolja',
     envPanelButton: 'Dodaj spremenljivko',
     envDescription: 'Okoljske spremenljivke se lahko uporabljajo za shranjevanje zasebnih informacij in poverilnic. So samo za branje in jih je mogoče ločiti od DSL datoteke med izvozem.',
+  },
+  globalVar: {
+    title: 'Sistemske spremenljivke',
+    description: 'Sistemske spremenljivke so globalne spremenljivke, do katerih lahko vsako vozlišče dostopa brez povezovanja, če je tip pravilen, na primer ID končnega uporabnika in ID poteka dela.',
+    fieldsDescription: {
+      conversationId: 'ID pogovora',
+      dialogCount: 'Število pogovorov',
+      userId: 'ID uporabnika',
+      triggerTimestamp: 'Časovni žig začetka delovanja aplikacije',
+      appId: 'ID aplikacije',
+      workflowId: 'ID poteka dela',
+      workflowRunId: 'ID izvajanja poteka dela',
+    },
   },
   chatVariable: {
     modal: {
@@ -218,6 +228,8 @@ const translation = {
     testRunIteration: 'Testiranje ponovitve',
     back: 'Nazaj',
     testRun: 'Testna vožnja',
+    reRun: 'Ponovni zagon',
+    preparingDataSource: 'Priprava vira podatkov',
   },
   tabs: {
     'customTool': 'Po meri',
@@ -236,6 +248,8 @@ const translation = {
     'agent': 'Agentska strategija',
     'addAll': 'Dodaj vse',
     'allAdded': 'Vse dodano',
+    'sources': 'Virov',
+    'searchDataSource': 'Iskanje vira podatkov',
   },
   blocks: {
     'iteration': 'Iteracija',
@@ -252,7 +266,7 @@ const translation = {
     'code': 'Koda',
     'template-transform': 'Predloga',
     'answer': 'Odgovor',
-    'end': 'Konec',
+    'end': 'Izhod',
     'iteration-start': 'Začetek iteracije',
     'list-operator': 'Seznam operater',
     'variable-aggregator': 'Spremenljivka agregator',
@@ -260,6 +274,8 @@ const translation = {
     'loop': 'Zanka',
     'agent': 'Agent',
     'variable-assigner': 'Spremenljivka agregator',
+    'datasource': 'Vir podatkov',
+    'knowledge-index': 'Baza znanja',
   },
   blocksAbout: {
     'list-operator': 'Uporabljeno za filtriranje ali razvrščanje vsebine polja.',
@@ -270,7 +286,7 @@ const translation = {
     'loop-end': 'Enakovredno „prekini“. Ta vozlišče nima konfiguracijskih elementov. Ko telo zanke doseže to vozlišče, zanka preneha.',
     'document-extractor': 'Uporabljeno za razčlenitev prenesenih dokumentov v besedilno vsebino, ki jo je enostavno razumeti za LLM.',
     'answer': 'Določi vsebino odgovora v pogovoru.',
-    'end': 'Določite tip konca in rezultata delovnega toka',
+    'end': 'Določite izhod in tip rezultata delovnega toka',
     'knowledge-retrieval': 'Omogoča vam, da poizvedujete o besedilnih vsebinah, povezanih z vprašanji uporabnikov iz znanja.',
     'http-request': 'Dovoli pošiljanje zahtevkov strežniku prek protokola HTTP',
     'llm': 'Uporaba velikih jezikovnih modelov za odgovarjanje na vprašanja ali obdelavo naravnega jezika',
@@ -282,6 +298,8 @@ const translation = {
     'variable-assigner': 'Združite večpodružinske spremenljivke v eno samo spremenljivko za enotno konfiguracijo spodnjih vozlišč.',
     'variable-aggregator': 'Združite večpodružnične spremenljivke v eno samo spremenljivko za enotno konfiguracijo spodnjih vozlišč.',
     'assigner': 'Vožnji vozlišča za dodelitev spremenljivk se uporablja za dodeljevanje vrednosti spremenljivkam, ki jih je mogoče zapisati (kot so spremenljivke za pogovor).',
+    'datasource': 'Vir podatkov O nas',
+    'knowledge-index': 'Baza znanja O',
   },
   operator: {
     zoomOut: 'Zoomirati ven',
@@ -317,10 +335,9 @@ const translation = {
     runThisStep: 'Izvedi ta korak',
     changeBlock: 'Spremeni vozlišče',
     addNextStep: 'Dodajte naslednji korak v ta delovni potek',
-    moveToThisNode: 'Premakni se na to vozlišče',
     checklistTip: 'Prepričajte se, da so vse težave rešene, preden objavite.',
     selectNextStep: 'Izberi naslednji korak',
-    helpLink: 'Pomočna povezava',
+    helpLink: 'Pomoč',
     checklist: 'Kontrolni seznam',
     checklistResolved: 'Vse težave so rešene',
     createdBy: 'Ustvarjeno z',
@@ -328,6 +345,8 @@ const translation = {
     minimize: 'Izhod iz celotnega zaslona',
     maximize: 'Maksimiziraj platno',
     optional: '(neobvezno)',
+    scrollToSelectedNode: 'Pomaknite se do izbranega vozlišča',
+    optional_and_hidden: '(neobvezno in skrito)',
   },
   nodes: {
     common: {
@@ -389,6 +408,7 @@ const translation = {
         variable: 'Uporabi spremenljivko',
         input: 'Vhodna vrednost',
       },
+      inputVars: 'Vhodne spremenljivke',
     },
     start: {
       outputVars: {
@@ -434,6 +454,7 @@ const translation = {
       },
       outputVars: {
         output: 'Ustvari vsebino',
+        reasoning_content: 'Vsebina razmišljanja',
         usage: 'Informacije o uporabi modela',
       },
       singleRun: {
@@ -477,6 +498,12 @@ const translation = {
       context: 'kontekst',
       addMessage: 'Dodaj sporočilo',
       vision: 'vizija',
+      reasoningFormat: {
+        tagged: 'Ohranite oznake za razmišljanje',
+        title: 'Omogoči ločevanje oznak za razsojanje',
+        tooltip: 'Izvleći vsebino iz miselnih oznak in jo shraniti v polje reasoning_content.',
+        separated: 'Ločite oznake za razmišljanje',
+      },
     },
     knowledgeRetrieval: {
       outputVars: {
@@ -917,6 +944,32 @@ const translation = {
       parameterSchema: 'Parametrska shema',
       clickToViewParameterSchema: 'Kliknite za prikaz sheme parametrov',
     },
+    dataSource: {
+      supportedFileFormats: 'Podprte oblike zapisa datotek',
+      add: 'Dodajanje vira podatkov',
+      supportedFileFormatsPlaceholder: 'Razširitev datoteke, e.g. doc',
+    },
+    knowledgeBase: {
+      chunkStructureTip: {
+        learnMore: 'Izvedi več',
+        title: 'Prosimo, izberite strukturo kosov',
+        message: 'Baza znanja Dify podpira tri strukture del: Splošno, Staršev-otrok in Vprašanja in odgovori. Vsaka baza znanja ima lahko samo eno strukturo. Izhod iz prejšnjega vozlišča mora biti poravnan z izbrano strukturo kosov. Upoštevajte, da izbira strukture koščkov vpliva na razpoložljive metode indeksa.',
+      },
+      chunkIsRequired: 'Potrebna je struktura kosov',
+      chooseChunkStructure: 'Izbira strukture koščka',
+      retrievalSettingIsRequired: 'Zahtevana je nastavitev pridobivanja',
+      indexMethodIsRequired: 'Zahteva se indeksna metoda',
+      chunkStructure: 'Struktura kosov',
+      changeChunkStructure: 'Spreminjanje strukture kosov',
+      aboutRetrieval: 'o metodi iskanja.',
+      chunksInput: 'Kosi',
+      chunksInputTip: 'Vhodna spremenljivka vozlišča podatkovne baze je Chunks. Tip spremenljivke je objekt s specifično JSON shemo, ki mora biti skladna z izbrano strukturo kosov.',
+      chunksVariableIsRequired: 'Spremenljivka Chunks je obvezna',
+      embeddingModelIsRequired: 'Zahteva se vgrajevalni model',
+      rerankingModelIsRequired: 'Potreben je model za ponovno razvrščanje',
+      rerankingModelIsInvalid: 'Model prerazvrščanja ni veljaven',
+      embeddingModelIsInvalid: 'Vdelovalni model ni veljaven',
+    },
   },
   tracing: {
     stopBy: 'Ohranjaj se pri {{user}}',
@@ -980,6 +1033,10 @@ const translation = {
       edited: 'Uredjeno',
       resetConversationVar: 'Ponastavi spremenljivko pogovora na privzeto vrednost',
       emptyTip: 'Po prehodu skozi vozlišče na platnu ali po zagonu vozlišča korak za korakom lahko v pregledu spremenljivk vidite trenutno vrednost spremenljivke vozlišča.',
+      export: 'izvoz',
+      exportToolTip: 'Izvozi spremenljivko kot datoteko',
+      largeDataNoExport: 'Veliki podatki – samo delni predogled',
+      largeData: 'Veliki podatki, predogled samo za branje. Izvozi, če si želite ogledati vse.',
     },
     settingsTab: 'Nastavitve',
     lastRunTab: 'Zadnji zagon',
@@ -997,6 +1054,10 @@ const translation = {
     noLastRunFound: 'Nobenega prejšnjega zagona ni bilo najdenega.',
     noMatchingInputsFound: 'Ni podatkov, ki bi ustrezali prejšnjemu zagonu',
     lastOutput: 'Nazadnje izhod',
+  },
+  sidebar: {
+    exportWarning: 'Izvozi trenutna shranjena različica',
+    exportWarningDesc: 'To bo izvozilo trenutno shranjeno različico vašega delovnega toka. Če imate neshranjene spremembe v urejevalniku, jih najprej shranite z uporabo možnosti izvoza na platnu delovnega toka.',
   },
 }
 

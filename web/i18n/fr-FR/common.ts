@@ -61,6 +61,10 @@ const translation = {
     deSelectAll: 'Désélectionner tout',
     selectAll: 'Sélectionner tout',
     config: 'Config',
+    no: 'Non',
+    confirmAction: 'Veuillez confirmer votre action.',
+    deleteConfirmTitle: 'Supprimer ?',
+    yes: 'Oui',
   },
   placeholder: {
     input: 'Veuillez entrer',
@@ -157,7 +161,6 @@ const translation = {
     workspace: 'Espace de travail',
     createWorkspace: 'Créer un Espace de Travail',
     helpCenter: 'Aide',
-    communityFeedback: 'Retour d\'information',
     roadmap: 'Feuille de route',
     community: 'Communauté',
     about: 'À propos',
@@ -165,6 +168,8 @@ const translation = {
     support: 'Soutien',
     github: 'GitHub',
     compliance: 'Conformité',
+    contactUs: 'Contactez-nous',
+    forum: 'Forum',
   },
   settings: {
     accountGroup: 'COMPTE',
@@ -491,7 +496,18 @@ const translation = {
       unAuthorized: 'Non autorisé',
       specifyModelCredentialTip: 'Utilisez un identifiant de modèle configuré.',
       providerManagedTip: 'La configuration actuelle est hébergée par le fournisseur.',
+      customModelCredentials: 'Informations d’identification du modèle personnalisé',
+      manageCredentials: 'Gérer les informations d’identification',
+      modelCredential: 'Références du modèle',
+      addModel: 'Ajouter un modèle',
+      addNewModelCredential: 'Ajouter de nouvelles informations d’identification de modèle',
+      selectModelCredential: 'Sélectionnez les informations d’identification d’un modèle',
+      customModelCredentialsDeleteTip: 'Les informations d’identification sont en cours d’utilisation et ne peuvent pas être supprimées',
+      removeModel: 'Supprimer le modèle',
+      editModelCredential: 'Modifier les informations d’identification du modèle',
     },
+    parametersInvalidRemoved: 'Certains paramètres sont invalides et ont été supprimés.',
+    installDataSourceProvider: 'Installer les fournisseurs de sources de données',
   },
   dataSource: {
     add: 'Ajouter une source de données',
@@ -590,6 +606,7 @@ const translation = {
     viewDoc: 'Voir la documentation',
     relatedApp: 'applications liées',
     noRelatedApp: 'Pas d’applications liées',
+    pipeline: 'Pipeline',
   },
   voiceInput: {
     speaking: 'Parle maintenant...',
@@ -710,6 +727,7 @@ const translation = {
     fileExtensionNotSupport: 'Extension de fichier non prise en charge',
     pasteFileLinkInvalid: 'Lien de fichier non valide',
     uploadFromComputerLimit: 'Le fichier de téléchargement ne peut pas dépasser {{size}}',
+    fileExtensionBlocked: 'Ce type de fichier est bloqué pour des raisons de sécurité',
   },
   license: {
     expiring: 'Expirant dans un jour',
@@ -748,6 +766,9 @@ const translation = {
     title: 'Fournir des retours',
     placeholder: 'Veuillez décrire ce qui n\'a pas fonctionné ou comment nous pourrions nous améliorer...',
     subtitle: 'Veuillez nous dire ce qui n\'a pas fonctionné avec cette réponse.',
+  },
+  label: {
+    optional: '(facultatif)',
   },
 }
 

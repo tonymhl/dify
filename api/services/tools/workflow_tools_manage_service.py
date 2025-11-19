@@ -3,7 +3,8 @@ from collections.abc import Mapping
 from datetime import datetime
 from typing import Any
 
-from sqlalchemy import or_
+from sqlalchemy import or_, select
+from sqlalchemy.orm import Session
 
 from core.model_runtime.utils.encoders import jsonable_encoder
 from core.tools.__base.tool_provider import ToolProviderController
@@ -13,6 +14,7 @@ from core.tools.utils.workflow_configuration_sync import WorkflowToolConfigurati
 from core.tools.workflow_as_tool.provider import WorkflowToolProviderController
 from core.tools.workflow_as_tool.tool import WorkflowTool
 from extensions.ext_database import db
+from libs.uuid_utils import uuidv7
 from models.model import App
 from models.tools import WorkflowToolProvider
 from models.workflow import Workflow
@@ -37,7 +39,7 @@ class WorkflowToolManageService:
         parameters: list[Mapping[str, Any]],
         privacy_policy: str = "",
         labels: list[str] | None = None,
-    ) -> dict:
+    ):
         WorkflowToolConfigurationUtils.check_parameter_configurations(parameters)
 
         # check if the name is unique
@@ -63,26 +65,26 @@ class WorkflowToolManageService:
         if workflow is None:
             raise ValueError(f"Workflow not found for app {workflow_app_id}")
 
-        workflow_tool_provider = WorkflowToolProvider(
-            tenant_id=tenant_id,
-            user_id=user_id,
-            app_id=workflow_app_id,
-            name=name,
-            label=label,
-            icon=json.dumps(icon),
-            description=description,
-            parameter_configuration=json.dumps(parameters),
-            privacy_policy=privacy_policy,
-            version=workflow.version,
-        )
+        with Session(db.engine, expire_on_commit=False) as session, session.begin():
+            workflow_tool_provider = WorkflowToolProvider(
+                id=str(uuidv7()),
+                tenant_id=tenant_id,
+                user_id=user_id,
+                app_id=workflow_app_id,
+                name=name,
+                label=label,
+                icon=json.dumps(icon),
+                description=description,
+                parameter_configuration=json.dumps(parameters),
+                privacy_policy=privacy_policy,
+                version=workflow.version,
+            )
+            session.add(workflow_tool_provider)
 
         try:
             WorkflowToolProviderController.from_db(workflow_tool_provider)
         except Exception as e:
             raise ValueError(str(e))
-
-        db.session.add(workflow_tool_provider)
-        db.session.commit()
 
         if labels is not None:
             ToolLabelManager.update_tool_labels(
@@ -103,7 +105,7 @@ class WorkflowToolManageService:
         parameters: list[Mapping[str, Any]],
         privacy_policy: str = "",
         labels: list[str] | None = None,
-    ) -> dict:
+    ):
         """
         Update a workflow tool.
         :param user_id: the user id
@@ -168,7 +170,6 @@ class WorkflowToolManageService:
         except Exception as e:
             raise ValueError(str(e))
 
-        db.session.add(workflow_tool_provider)
         db.session.commit()
 
         if labels is not None:
@@ -186,7 +187,9 @@ class WorkflowToolManageService:
         :param tenant_id: the tenant id
         :return: the list of tools
         """
-        db_tools = db.session.query(WorkflowToolProvider).where(WorkflowToolProvider.tenant_id == tenant_id).all()
+        db_tools = db.session.scalars(
+            select(WorkflowToolProvider).where(WorkflowToolProvider.tenant_id == tenant_id)
+        ).all()
 
         tools: list[WorkflowToolProviderController] = []
         for provider in db_tools:
@@ -217,7 +220,7 @@ class WorkflowToolManageService:
         return result
 
     @classmethod
-    def delete_workflow_tool(cls, user_id: str, tenant_id: str, workflow_tool_id: str) -> dict:
+    def delete_workflow_tool(cls, user_id: str, tenant_id: str, workflow_tool_id: str):
         """
         Delete a workflow tool.
         :param user_id: the user id
@@ -233,7 +236,7 @@ class WorkflowToolManageService:
         return {"result": "success"}
 
     @classmethod
-    def get_workflow_tool_by_tool_id(cls, user_id: str, tenant_id: str, workflow_tool_id: str) -> dict:
+    def get_workflow_tool_by_tool_id(cls, user_id: str, tenant_id: str, workflow_tool_id: str):
         """
         Get a workflow tool.
         :param user_id: the user id
@@ -249,7 +252,7 @@ class WorkflowToolManageService:
         return cls._get_workflow_tool(tenant_id, db_tool)
 
     @classmethod
-    def get_workflow_tool_by_app_id(cls, user_id: str, tenant_id: str, workflow_app_id: str) -> dict:
+    def get_workflow_tool_by_app_id(cls, user_id: str, tenant_id: str, workflow_app_id: str):
         """
         Get a workflow tool.
         :param user_id: the user id
@@ -265,7 +268,7 @@ class WorkflowToolManageService:
         return cls._get_workflow_tool(tenant_id, db_tool)
 
     @classmethod
-    def _get_workflow_tool(cls, tenant_id: str, db_tool: WorkflowToolProvider | None) -> dict:
+    def _get_workflow_tool(cls, tenant_id: str, db_tool: WorkflowToolProvider | None):
         """
         Get a workflow tool.
         :db_tool: the database tool

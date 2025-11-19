@@ -1,6 +1,5 @@
 const translation = {
   type: {
-    all: 'Semua',
     workflow: 'Alur Kerja',
     builtIn: 'Perkakas',
     custom: 'Adat',
@@ -35,8 +34,6 @@ const translation = {
     category: 'golongan',
     type: 'jenis',
     added: 'Ditambahkan',
-    add: 'tambah',
-    manageInTools: 'Kelola di Alat',
   },
   createTool: {
     exampleOptions: {
@@ -175,6 +172,22 @@ const translation = {
       cancel: 'Membatalkan',
       serverIdentifierPlaceholder: 'Pengidentifikasi unik, misalnya, my-mcp-server',
       serverUrl: 'Server URL',
+      headers: 'Header',
+      timeoutPlaceholder: '30',
+      addHeader: 'Tambahkan Judul',
+      headerKey: 'Nama Header',
+      headerValue: 'Nilai Header',
+      headersTip: 'Header HTTP tambahan untuk dikirim bersama permintaan server MCP',
+      headerKeyPlaceholder: 'Authorization',
+      headerValuePlaceholder: 'Bearer 123',
+      noHeaders: 'Tidak ada header kustom yang dikonfigurasi',
+      maskedHeadersTip: 'Nilai header disembunyikan untuk keamanan. Perubahan akan memperbarui nilai yang sebenarnya.',
+      clientSecretPlaceholder: 'Rahasia Klien',
+      authentication: 'Otentikasi',
+      useDynamicClientRegistration: 'Gunakan Pendaftaran Klien Dinamis',
+      configurations: 'Konfigurasi',
+      clientSecret: 'Rahasia Klien',
+      clientID: 'ID Klien',
     },
     operation: {
       edit: 'Mengedit',
@@ -216,11 +229,14 @@ const translation = {
     toolUpdateConfirmContent: 'Memperbarui daftar alat dapat memengaruhi aplikasi yang ada. Apakah Anda ingin melanjutkan?',
     update: 'Pemutakhiran',
     identifier: 'Pengenal Server (Klik untuk Menyalin)',
+    toolItem: {
+      parameters: 'Parameter',
+      noDescription: 'Tanpa deskripsi',
+    },
   },
   title: 'Perkakas',
   createCustomTool: 'Buat Alat Kustom',
   customToolTip: 'Pelajari alat kustom Dify lebih lanjut',
-  addTool: 'Tambahkan Alat',
   author: 'Oleh',
   copyToolName: 'Salin Nama',
   howToGet: 'Cara mendapatkan',
@@ -230,6 +246,7 @@ const translation = {
   openInStudio: 'Buka di Studio',
   builtInPromptTitle: 'Cepat',
   toolNameUsageTip: 'Nama panggilan alat untuk penalaran dan permintaan agen',
+  allTools: 'Semua alat',
 }
 
 export default translation

@@ -61,6 +61,10 @@ const translation = {
     deSelectAll: 'Desmarcar tudo',
     selectAll: 'Selecionar tudo',
     config: 'Configuração',
+    no: 'Não',
+    yes: 'Sim',
+    deleteConfirmTitle: 'Excluir?',
+    confirmAction: 'Por favor, confirme sua ação.',
   },
   placeholder: {
     input: 'Por favor, insira',
@@ -157,7 +161,6 @@ const translation = {
     workspace: 'Espaço de trabalho',
     createWorkspace: 'Criar Espaço de Trabalho',
     helpCenter: 'Ajuda',
-    communityFeedback: 'Feedback',
     roadmap: 'Roteiro',
     community: 'Comunidade',
     about: 'Sobre',
@@ -165,6 +168,8 @@ const translation = {
     github: 'GitHub',
     support: 'Suporte',
     compliance: 'Conformidade',
+    contactUs: 'Contate-Nos',
+    forum: 'Fórum',
   },
   settings: {
     accountGroup: 'CONTA',
@@ -490,7 +495,18 @@ const translation = {
       addModelCredential: 'Adicionar credenciais do modelo',
       configLoadBalancing: 'Configuração de Balanceamento de Carga',
       specifyModelCredentialTip: 'Use uma credencial de modelo configurada.',
+      modelCredential: 'Credencial de modelo',
+      editModelCredential: 'Editar credencial do modelo',
+      manageCredentials: 'Gerenciar credenciais',
+      customModelCredentials: 'Credenciais de modelo personalizado',
+      addModel: 'Adicionar modelo',
+      removeModel: 'Remover modelo',
+      selectModelCredential: 'Selecione uma credencial de modelo',
+      customModelCredentialsDeleteTip: 'A credencial está em uso e não pode ser excluída',
+      addNewModelCredential: 'Adicionar nova credencial de modelo',
     },
+    parametersInvalidRemoved: 'Alguns parâmetros são inválidos e foram removidos',
+    installDataSourceProvider: 'Instalar provedores de fontes de dados',
   },
   dataSource: {
     add: 'Adicionar uma fonte de dados',
@@ -589,6 +605,7 @@ const translation = {
     viewDoc: 'Ver documentação',
     relatedApp: 'aplicativos relacionados',
     noRelatedApp: 'Nenhum aplicativo vinculado',
+    pipeline: 'Pipeline',
   },
   voiceInput: {
     speaking: 'Fale agora...',
@@ -709,6 +726,7 @@ const translation = {
     uploadFromComputerReadError: 'Falha na leitura do arquivo, tente novamente.',
     uploadFromComputerLimit: 'Carregar arquivo não pode exceder {{size}}',
     uploadFromComputerUploadError: 'Falha no upload do arquivo, faça o upload novamente.',
+    fileExtensionBlocked: 'Este tipo de arquivo está bloqueado por razões de segurança',
   },
   license: {
     expiring: 'Expirando em um dia',
@@ -747,6 +765,9 @@ const translation = {
     content: 'Conteúdo do feedback',
     subtitle: 'Por favor, nos diga o que deu errado com esta resposta',
     placeholder: 'Por favor, descreva o que deu errado ou como podemos melhorar...',
+  },
+  label: {
+    optional: '(opcional)',
   },
 }
 

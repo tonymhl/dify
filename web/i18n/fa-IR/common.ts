@@ -61,6 +61,10 @@ const translation = {
     selectAll: 'انتخاب همه',
     deSelectAll: 'همه را انتخاب نکنید',
     config: 'تنظیمات',
+    no: 'نه',
+    deleteConfirmTitle: 'حذف شود؟',
+    yes: 'بله',
+    confirmAction: 'لطفاً اقدام خود را تأیید کنید.',
   },
   errorMsg: {
     fieldRequired: '{{field}} الزامی است',
@@ -161,7 +165,6 @@ const translation = {
     workspace: 'فضای کاری',
     createWorkspace: 'ایجاد فضای کاری',
     helpCenter: 'راهنما',
-    communityFeedback: 'بازخورد',
     roadmap: 'نقشه راه',
     community: 'انجمن',
     about: 'درباره',
@@ -169,6 +172,8 @@ const translation = {
     github: 'گیت‌هاب',
     compliance: 'انطباق',
     support: 'پشتیبانی',
+    contactUs: 'با ما تماس بگیرید',
+    forum: 'انجمن',
   },
   settings: {
     accountGroup: 'حساب کاربری',
@@ -494,7 +499,18 @@ const translation = {
       specifyModelCredentialTip: 'از اعتبارنامه مدل پیکربندی شده استفاده کنید.',
       providerManagedTip: 'تنظیمات فعلی توسط ارائه‌دهنده میزبانی می‌شود.',
       modelCredentials: 'مدل اعتبارنامه',
+      manageCredentials: 'مدیریت اعتبارنامه ها',
+      addModel: 'افزودن مدل',
+      removeModel: 'حذف مدل',
+      modelCredential: 'اعتبار مدل',
+      selectModelCredential: 'یک اعتبار مدل را انتخاب کنید',
+      editModelCredential: 'اعتبار مدل را ویرایش کنید',
+      addNewModelCredential: 'افزودن اعتبار مدل جدید',
+      customModelCredentials: 'اعتبار مدل سفارشی',
+      customModelCredentialsDeleteTip: 'اعتبار در حال استفاده است و قابل حذف نیست',
     },
+    parametersInvalidRemoved: 'برخی پارامترها نامعتبر هستند و حذف شده‌اند',
+    installDataSourceProvider: 'نصب ارائه‌دهندگان منبع داده',
   },
   dataSource: {
     add: 'افزودن منبع داده',
@@ -593,6 +609,7 @@ const translation = {
     viewDoc: 'مشاهده مستندات',
     relatedApp: 'برنامه‌های مرتبط',
     noRelatedApp: 'هیچ برنامه پیوندی وجود ندارد',
+    pipeline: 'خط لوله',
   },
   voiceInput: {
     speaking: 'اکنون صحبت کنید...',
@@ -709,6 +726,7 @@ const translation = {
     uploadFromComputerUploadError: 'آپلود فایل انجام نشد، لطفا دوباره آپلود کنید.',
     pasteFileLink: 'پیوند فایل را جایگذاری کنید',
     uploadFromComputerLimit: 'آپلود فایل نمی تواند از {{size}} تجاوز کند',
+    fileExtensionBlocked: 'این نوع فایل به دلایل امنیتی مسدود شده است',
   },
   license: {
     expiring_plural: 'انقضا در {{count}} روز',
@@ -747,6 +765,9 @@ const translation = {
     subtitle: 'لطفاً به ما بگویید که چه مشکلی در این پاسخ پیش آمده است.',
     content: 'محتوای بازخورد',
     placeholder: 'لطفاً توضیح دهید که چه مشکلی پیش آمد یا چگونه می‌توانیم بهبود پیدا کنیم...',
+  },
+  label: {
+    optional: '(اختیاری)',
   },
 }
 

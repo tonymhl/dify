@@ -111,6 +111,7 @@ const translation = {
       preUseReminder: 'Harap aktifkan aplikasi web sebelum melanjutkan.',
       regenerateNotice: 'Apakah Anda ingin membuat ulang URL publik?',
       explanation: 'Aplikasi web AI siap pakai',
+      enableTooltip: {},
     },
     apiInfo: {
       accessibleAddress: 'Titik Akhir API Layanan',
@@ -119,10 +120,14 @@ const translation = {
       explanation: 'Mudah diintegrasikan ke dalam aplikasi Anda',
     },
     status: {
-      disable: 'Cacat',
-      running: 'Dalam Layanan',
+      disable: 'Nonaktif',
+      running: 'Berjalan',
     },
     title: 'Ikhtisar',
+    triggerInfo: {},
+    disableTooltip: {
+      triggerMode: 'Fitur {{feature}} tidak didukung dalam mode Node Pemicu.',
+    },
   },
   analysis: {
     totalMessages: {

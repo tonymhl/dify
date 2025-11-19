@@ -15,16 +15,19 @@ import Toast from '@/app/components/base/toast'
 import { IS_CE_EDITION } from '@/config'
 import { useGlobalPublicStore } from '@/context/global-public-context'
 import { resolvePostLoginRedirect } from './utils/post-login-redirect'
+import Split from './split'
+import { useIsLogin } from '@/service/use-common'
 
 const NormalForm = () => {
   const { t } = useTranslation()
   const router = useRouter()
   const searchParams = useSearchParams()
-  const consoleToken = decodeURIComponent(searchParams.get('access_token') || '')
-  const refreshToken = decodeURIComponent(searchParams.get('refresh_token') || '')
+  const { isLoading: isCheckLoading, data: loginData } = useIsLogin()
+  const isLoggedIn = loginData?.logged_in
   const message = decodeURIComponent(searchParams.get('message') || '')
   const invite_token = decodeURIComponent(searchParams.get('invite_token') || '')
-  const [isLoading, setIsLoading] = useState(true)
+  const [isInitCheckLoading, setInitCheckLoading] = useState(true)
+  const isLoading = isCheckLoading || loginData?.logged_in || isInitCheckLoading
   const { systemFeatures } = useGlobalPublicStore()
   const [authType, updateAuthType] = useState<'code' | 'password'>('password')
   const [showORLine, setShowORLine] = useState(false)
@@ -35,9 +38,7 @@ const NormalForm = () => {
 
   const init = useCallback(async () => {
     try {
-      if (consoleToken && refreshToken) {
-        localStorage.setItem('console_token', consoleToken)
-        localStorage.setItem('refresh_token', refreshToken)
+      if (isLoggedIn) {
         const redirectUrl = resolvePostLoginRedirect(searchParams)
         router.replace(redirectUrl || '/apps')
         return
@@ -66,12 +67,12 @@ const NormalForm = () => {
       console.error(error)
       setAllMethodsAreDisabled(true)
     }
-    finally { setIsLoading(false) }
-  }, [consoleToken, refreshToken, message, router, invite_token, isInviteLink, systemFeatures])
+    finally { setInitCheckLoading(false) }
+  }, [isLoggedIn, message, router, invite_token, isInviteLink, systemFeatures])
   useEffect(() => {
     init()
   }, [init])
-  if (isLoading || consoleToken) {
+  if (isLoading) {
     return <div className={
       cn(
         'flex w-full grow flex-col items-center justify-center',
@@ -134,8 +135,8 @@ const NormalForm = () => {
             {!systemFeatures.branding.enabled && <p className='body-md-regular mt-2 text-text-tertiary'>{t('login.joinTipStart')}{workspaceName}{t('login.joinTipEnd')}</p>}
           </div>
           : <div className="mx-auto w-full">
-            <h2 className="title-4xl-semi-bold text-text-primary">{t('login.pageTitle')}</h2>
-            {!systemFeatures.branding.enabled && <p className='body-md-regular mt-2 text-text-tertiary'>{t('login.welcome')}</p>}
+            <h2 className="title-4xl-semi-bold text-text-primary">{systemFeatures.branding.enabled ? t('login.pageTitleForE') : t('login.pageTitle')}</h2>
+            <p className='body-md-regular mt-2 text-text-tertiary'>{t('login.welcome')}</p>
           </div>}
         <div className="relative">
           <div className="mt-6 flex flex-col gap-3">
@@ -166,8 +167,19 @@ const NormalForm = () => {
                   <span className='system-xs-medium text-components-button-secondary-accent-text'>{t('login.useVerificationCode')}</span>
                 </div>}
               </>}
+              <Split className='mb-5 mt-4' />
             </>
           }
+
+          {systemFeatures.is_allow_register && authType === 'password' && (
+            <div className='mb-3 text-[13px] font-medium leading-4 text-text-secondary'>
+              <span>{t('login.signup.noAccount')}</span>
+              <Link
+                className='text-text-accent'
+                href='/signup'
+              >{t('login.signup.signUp')}</Link>
+            </div>
+          )}
           {allMethodsAreDisabled && <>
             <div className="rounded-lg bg-gradient-to-r from-workflow-workflow-progress-bg-1 to-workflow-workflow-progress-bg-2 p-4">
               <div className='shadows-shadow-lg mb-2 flex h-10 w-10 items-center justify-center rounded-xl bg-components-card-bg shadow'>
@@ -207,7 +219,6 @@ const NormalForm = () => {
               >{t('login.setAdminAccount')}</Link>
             </div>}
           </>}
-
         </div>
       </div>
     </>

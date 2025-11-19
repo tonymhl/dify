@@ -14,6 +14,7 @@ export enum FormTypeEnum {
   secretInput = 'secret-input',
   select = 'select',
   radio = 'radio',
+  checkbox = 'checkbox',
   boolean = 'boolean',
   files = 'files',
   file = 'file',
@@ -199,6 +200,7 @@ export type CustomModelCredential = CustomModel & {
   credentials?: Record<string, any>
   available_model_credentials?: Credential[]
   current_credential_id?: string
+  current_credential_name?: string
 }
 
 export type CredentialWithModel = Credential & {
@@ -236,6 +238,10 @@ export type ModelProvider = {
     current_credential_name?: string
     available_credentials?: Credential[]
     custom_models?: CustomModelCredential[]
+    can_added_models?: {
+      model: string
+      model_type: ModelTypeEnum
+    }[]
   }
   system_configuration: {
     enabled: boolean
@@ -322,4 +328,11 @@ export type ModelCredential = {
   available_credentials: Credential[]
   current_credential_id?: string
   current_credential_name?: string
+}
+
+export enum ModelModalModeEnum {
+  configProviderCredential = 'config-provider-credential',
+  configCustomModel = 'config-custom-model',
+  addCustomModelToModelList = 'add-custom-model-to-model-list',
+  configModelCredential = 'config-model-credential',
 }

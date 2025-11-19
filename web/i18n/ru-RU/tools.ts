@@ -3,7 +3,6 @@ const translation = {
   createCustomTool: 'Создать пользовательский инструмент',
   customToolTip: 'Узнать больше о пользовательских инструментах Dify',
   type: {
-    all: 'Все',
     builtIn: 'Встроенные',
     custom: 'Пользовательские',
     workflow: 'Рабочий процесс',
@@ -21,13 +20,10 @@ const translation = {
     setupModalTitleDescription: 'После настройки учетных данных все участники рабочего пространства смогут использовать этот инструмент при оркестровке приложений.',
   },
   includeToolNum: 'Включено {{num}} инструментов',
-  addTool: 'Добавить инструмент',
   addToolModal: {
     type: 'тип',
     category: 'категория',
-    add: 'добавить',
     added: 'добавлено',
-    manageInTools: 'Управлять в инструментах',
     custom: {
       title: 'Нет доступного пользовательского инструмента',
       tip: 'Создать пользовательский инструмент',
@@ -193,6 +189,22 @@ const translation = {
       confirm: 'Добавить и авторизовать',
       timeout: 'Тайм-аут',
       sseReadTimeout: 'Таймаут чтения SSE',
+      headerValuePlaceholder: 'например, Токен носителя 123',
+      headers: 'Заголовки',
+      headerKey: 'Название заголовка',
+      timeoutPlaceholder: 'тридцать',
+      addHeader: 'Добавить заголовок',
+      headerValue: 'Значение заголовка',
+      headerKeyPlaceholder: 'например, Авторизация',
+      noHeaders: 'Нет настроенных пользовательских заголовков',
+      maskedHeadersTip: 'Значения заголовков скрыты для безопасности. Изменения обновят фактические значения.',
+      headersTip: 'Дополнительные HTTP заголовки для отправки с запросами к серверу MCP',
+      configurations: 'Конфигурации',
+      clientID: 'Идентификатор клиента',
+      clientSecretPlaceholder: 'Секрет клиента',
+      useDynamicClientRegistration: 'Использовать динамическую регистрацию клиентов',
+      clientSecret: 'Секрет клиента',
+      authentication: 'Аутентификация',
     },
     delete: 'Удалить MCP сервер',
     deleteConfirmTitle: 'Вы действительно хотите удалить {mcp}?',
@@ -233,7 +245,12 @@ const translation = {
       },
       publishTip: 'Приложение не опубликовано. Пожалуйста, сначала опубликуйте приложение.',
     },
+    toolItem: {
+      parameters: 'Параметры',
+      noDescription: 'Нет описания',
+    },
   },
+  allTools: 'Все инструменты',
 }
 
 export default translation

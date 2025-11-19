@@ -17,6 +17,7 @@ import type { NodePanelProps } from '@/app/components/workflow/types'
 import Tooltip from '@/app/components/base/tooltip'
 import Editor from '@/app/components/workflow/nodes/_base/components/prompt/editor'
 import StructureOutput from './components/structure-output'
+import ReasoningFormatConfig from './components/reasoning-format-config'
 import Switch from '@/app/components/base/switch'
 import { RiAlertFill, RiQuestionLine } from '@remixicon/react'
 import { fetchAndMergeValidCompletionParams } from '@/utils/completion-params'
@@ -61,6 +62,7 @@ const Panel: FC<NodePanelProps<LLMNodeType>> = ({
     handleStructureOutputEnableChange,
     handleStructureOutputChange,
     filterJinja2InputVar,
+    handleReasoningFormatChange,
   } = useConfig(id, data)
 
   const model = inputs.model
@@ -76,6 +78,7 @@ const Panel: FC<NodePanelProps<LLMNodeType>> = ({
           model.provider,
           model.modelId,
           inputs.model.completion_params,
+          true,
         )
         const keys = Object.keys(removedDetails)
         if (keys.length)
@@ -91,7 +94,6 @@ const Panel: FC<NodePanelProps<LLMNodeType>> = ({
       }
     })()
   }, [inputs.model.completion_params])
-
   return (
     <div className='mt-2'>
       <div className='space-y-4 px-4 pb-4'>
@@ -103,7 +105,6 @@ const Panel: FC<NodePanelProps<LLMNodeType>> = ({
             popupClassName='!w-[387px]'
             isInWorkflow
             isAdvancedMode={true}
-            mode={model?.mode}
             provider={model?.provider}
             completionParams={model?.completion_params}
             modelId={model?.name}
@@ -239,6 +240,14 @@ const Panel: FC<NodePanelProps<LLMNodeType>> = ({
           config={inputs.vision?.configs}
           onConfigChange={handleVisionResolutionChange}
         />
+
+        {/* Reasoning Format */}
+        <ReasoningFormatConfig
+          // Default to tagged for backward compatibility
+          value={inputs.reasoning_format || 'tagged'}
+          onChange={handleReasoningFormatChange}
+          readonly={readOnly}
+        />
       </div>
       <Split />
       <OutputVars
@@ -281,6 +290,11 @@ const Panel: FC<NodePanelProps<LLMNodeType>> = ({
             name='text'
             type='string'
             description={t(`${i18nPrefix}.outputVars.output`)}
+          />
+          <VarItem
+            name='reasoning_content'
+            type='string'
+            description={t(`${i18nPrefix}.outputVars.reasoning_content`)}
           />
           <VarItem
             name='usage'

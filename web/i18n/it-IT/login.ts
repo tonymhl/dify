@@ -65,6 +65,7 @@ const translation = {
     passwordInvalid:
       'La password deve contenere lettere e numeri, e la lunghezza deve essere maggiore di 8',
     registrationNotAllowed: 'Account non trovato. Si prega di contattare l\'amministratore di sistema per registrarsi.',
+    invalidEmailOrPassword: 'Email o password non validi.',
   },
   license: {
     tip: 'Prima di avviare Dify Community Edition, leggi su GitHub',
@@ -120,6 +121,16 @@ const translation = {
     disabled: 'L\'autenticazione dell\'app web è disabilitata. Si prega di contattare l\'amministratore di sistema per abilitarla. Puoi provare a utilizzare l\'app direttamente.',
     login: 'Accesso',
   },
+  signup: {
+    signIn: 'Accedi',
+    noAccount: 'Non hai un account?',
+    haveAccount: 'Hai già un account?',
+    createAccount: 'Crea il tuo account',
+    verifyMail: 'Continua con il codice di verifica',
+    signUp: 'Iscriviti',
+    welcome: '👋 Benvenuto! Per favore compila i dettagli per iniziare.',
+  },
+  pageTitleForE: 'Ehi, cominciamo!',
 }
 
 export default translation

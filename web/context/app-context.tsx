@@ -8,6 +8,9 @@ import { fetchCurrentWorkspace, fetchLangGeniusVersion, fetchUserProfile } from 
 import type { ICurrentWorkspace, LangGeniusVersionResponse, UserProfileResponse } from '@/models/common'
 import MaintenanceNotice from '@/app/components/header/maintenance-notice'
 import { noop } from 'lodash-es'
+import { setZendeskConversationFields } from '@/app/components/base/zendesk/utils'
+import { ZENDESK_FIELD_IDS } from '@/config'
+import { useGlobalPublicStore } from './global-public-context'
 
 export type AppContextValue = {
   userProfile: UserProfileResponse
@@ -75,6 +78,7 @@ export type AppContextProviderProps = {
 }
 
 export const AppContextProvider: FC<AppContextProviderProps> = ({ children }) => {
+  const systemFeatures = useGlobalPublicStore(s => s.systemFeatures)
   const { data: userProfileResponse, mutate: mutateUserProfile, error: userProfileError } = useSWR({ url: '/account/profile', params: {} }, fetchUserProfile)
   const { data: currentWorkspaceResponse, mutate: mutateCurrentWorkspace, isLoading: isLoadingCurrentWorkspace } = useSWR({ url: '/workspaces/current', params: {} }, fetchCurrentWorkspace)
 
@@ -90,10 +94,12 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({ children }) =>
       try {
         const result = await userProfileResponse.json()
         setUserProfile(result)
-        const current_version = userProfileResponse.headers.get('x-version')
-        const current_env = process.env.NODE_ENV === 'development' ? 'DEVELOPMENT' : userProfileResponse.headers.get('x-env')
-        const versionData = await fetchLangGeniusVersion({ url: '/version', params: { current_version } })
-        setLangGeniusVersionInfo({ ...versionData, current_version, latest_version: versionData.version, current_env })
+        if (!systemFeatures.branding.enabled) {
+          const current_version = userProfileResponse.headers.get('x-version')
+          const current_env = process.env.NODE_ENV === 'development' ? 'DEVELOPMENT' : userProfileResponse.headers.get('x-env')
+          const versionData = await fetchLangGeniusVersion({ url: '/version', params: { current_version } })
+          setLangGeniusVersionInfo({ ...versionData, current_version, latest_version: versionData.version, current_env })
+        }
       }
       catch (error) {
         console.error('Failed to update user profile:', error)
@@ -114,6 +120,44 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({ children }) =>
     if (currentWorkspaceResponse)
       setCurrentWorkspace(currentWorkspaceResponse)
   }, [currentWorkspaceResponse])
+
+  // #region Zendesk conversation fields
+  useEffect(() => {
+    if (ZENDESK_FIELD_IDS.ENVIRONMENT && langGeniusVersionInfo?.current_env) {
+      setZendeskConversationFields([{
+        id: ZENDESK_FIELD_IDS.ENVIRONMENT,
+        value: langGeniusVersionInfo.current_env.toLowerCase(),
+      }])
+    }
+  }, [langGeniusVersionInfo?.current_env])
+
+  useEffect(() => {
+    if (ZENDESK_FIELD_IDS.VERSION && langGeniusVersionInfo?.version) {
+      setZendeskConversationFields([{
+        id: ZENDESK_FIELD_IDS.VERSION,
+        value: langGeniusVersionInfo.version,
+      }])
+    }
+  }, [langGeniusVersionInfo?.version])
+
+  useEffect(() => {
+    if (ZENDESK_FIELD_IDS.EMAIL && userProfile?.email) {
+      setZendeskConversationFields([{
+        id: ZENDESK_FIELD_IDS.EMAIL,
+        value: userProfile.email,
+      }])
+    }
+  }, [userProfile?.email])
+
+  useEffect(() => {
+    if (ZENDESK_FIELD_IDS.WORKSPACE_ID && currentWorkspace?.id) {
+      setZendeskConversationFields([{
+        id: ZENDESK_FIELD_IDS.WORKSPACE_ID,
+        value: currentWorkspace.id,
+      }])
+    }
+  }, [currentWorkspace?.id])
+  // #endregion Zendesk conversation fields
 
   return (
     <AppContext.Provider value={{

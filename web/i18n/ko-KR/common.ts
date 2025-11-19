@@ -61,6 +61,10 @@ const translation = {
     selectAll: '모두 선택',
     deSelectAll: '모두 선택 해제',
     config: '구성',
+    no: '아니요',
+    yes: '네',
+    deleteConfirmTitle: '삭제하시겠습니까?',
+    confirmAction: '귀하의 행동을 확인해 주세요.',
   },
   placeholder: {
     input: '입력해주세요',
@@ -153,7 +157,6 @@ const translation = {
     workspace: '작업 공간',
     createWorkspace: '작업 공간 만들기',
     helpCenter: '도움말 센터',
-    communityFeedback: '로드맵 및 피드백',
     roadmap: '로드맵',
     community: '커뮤니티',
     about: 'Dify 소개',
@@ -161,6 +164,8 @@ const translation = {
     github: '깃허브',
     compliance: '컴플라이언스',
     support: '지원',
+    contactUs: '문의하기',
+    forum: '포럼',
   },
   settings: {
     accountGroup: '계정',
@@ -486,7 +491,18 @@ const translation = {
       addModelCredential: '모델 자격 증명 추가',
       specifyModelCredential: '모델 자격 증명을 명시하세요.',
       providerManagedTip: '현재 구성은 제공업체에 의해 호스팅되고 있습니다.',
+      addModel: '모델 추가',
+      removeModel: '모델 제거',
+      manageCredentials: '자격 증명 관리',
+      selectModelCredential: '모델 자격 증명 선택',
+      modelCredential: '모델 자격 증명',
+      addNewModelCredential: '새 모델 자격 증명 추가',
+      editModelCredential: '모델 자격 증명 편집',
+      customModelCredentials: '사용자 지정 모델 자격 증명',
+      customModelCredentialsDeleteTip: '자격 증명이 사용 중이며 삭제할 수 없습니다.',
     },
+    parametersInvalidRemoved: '일부 매개변수가 유효하지 않아 제거되었습니다.',
+    installDataSourceProvider: '데이터 소스 공급자 설치',
   },
   dataSource: {
     add: '데이터 소스 추가하기',
@@ -585,6 +601,7 @@ const translation = {
     viewDoc: '문서 보기',
     relatedApp: '관련 앱',
     noRelatedApp: '연결된 앱 없음',
+    pipeline: '파이프라인',
   },
   voiceInput: {
     speaking: '지금 말하고 있습니다...',
@@ -705,6 +722,7 @@ const translation = {
     fileExtensionNotSupport: '지원되지 않는 파일 확장자',
     uploadFromComputerLimit: '업로드 파일은 {{size}}를 초과할 수 없습니다.',
     uploadFromComputerUploadError: '파일 업로드에 실패했습니다. 다시 업로드하십시오.',
+    fileExtensionBlocked: '보안상의 이유로 이 파일 형식은 차단되었습니다',
   },
   license: {
     expiring_plural: '{{count}}일 후에 만료',
@@ -743,6 +761,9 @@ const translation = {
     title: '피드백 제공하기',
     subtitle: '이 응답에서 무엇이 잘못되었는지 말씀해 주세요.',
     placeholder: '문제가 무엇인지 또는 어떻게 개선할 수 있는지 설명해 주십시오...',
+  },
+  label: {
+    optional: '(선택 사항)',
   },
 }
 
