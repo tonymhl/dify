@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dify Hit-Testing 评测报告</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --muted: #94a3b8;
+      --text: #e5e7eb;
+      --accent: #60a5fa;
+      --ok: #22c55e;
+      --bad: #ef4444;
+      --warn: #f59e0b;
+      --border: #1f2937;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background: radial-gradient(1200px 800px at 20% -10%, #1a243f 0%, rgba(15,23,42,0) 60%),
+                  radial-gradient(1000px 700px at 120% 10%, #193d52 0%, rgba(15,23,42,0) 60%),
+                  var(--bg);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      min-height: 100vh;
+    }
+    header {
+      padding: 24px 20px 8px;
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: .2px;
+    }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .card {
+      background: rgba(17,24,39,0.7);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+    .panel {
+      margin: 12px 20px;
+      padding: 14px;
+    }
+    .hint { color: var(--muted); font-size: 13px; }
+    input[type="file"], input[type="text"], select, button {
+      height: 36px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #0b1220;
+      color: var(--text);
+      padding: 0 10px;
+      outline: none;
+    }
+    button {
+      background: linear-gradient(135deg, #2563eb, #0891b2);
+      border: none;
+      cursor: pointer;
+    }
+    button.secondary { background: #0b1220; border: 1px solid var(--border); }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(140px, 1fr));
+      gap: 12px;
+    }
+    .metric {
+      padding: 12px;
+      border-radius: 10px;
+      background: linear-gradient(180deg, rgba(31,41,55,0.9), rgba(12,18,31,0.9));
+      border: 1px solid var(--border);
+    }
+    .metric .label { color: var(--muted); font-size: 12px; }
+    .metric .value { font-size: 20px; margin-top: 4px; font-weight: 700; }
+    .metric.ok .value { color: var(--ok); }
+    .metric.bad .value { color: var(--bad); }
+    .metric.warn .value { color: var(--warn); }
+    .grid {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid var(--border);
+    }
+    .grid th, .grid td {
+      border-bottom: 1px solid var(--border);
+      padding: 10px 12px;
+      font-size: 13px;
+      vertical-align: top;
+    }
+    .grid th {
+      background: #0b1220;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      text-align: left;
+    }
+    .pill {
+      display: inline-block;
+      padding: 2px 8px;
+      font-size: 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+    }
+    .pill.ok { color: var(--ok); border-color: rgba(34,197,94,.35); background: rgba(34,197,94,.08); }
+    .pill.bad { color: var(--bad); border-color: rgba(239,68,68,.35); background: rgba(239,68,68,.08); }
+    .pill.rank { color: var(--accent); border-color: rgba(96,165,250,.35); background: rgba(96,165,250,.08); }
+    .controls { display:flex; gap:10px; align-items:center; flex-wrap: wrap; }
+    .section-title { margin: 0 0 8px; font-size: 16px; font-weight: 700; }
+    .muted { color: var(--muted); }
+    .nowrap { white-space: nowrap; }
+    .scroll {
+      overflow: auto;
+      max-height: 55vh;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .footer {
+      color: var(--muted);
+      font-size: 12px;
+      padding: 16px 20px 28px;
+    }
+    .spacer { flex: 1; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Dify Hit-Testing 评测报告</h1>
+    <div class="card panel toolbar">
+      <div class="controls">
+        <input id="fileInput" type="file" accept=".jsonl,.txt" />
+        <input id="topkInput" type="number" value="5" min="1" max="100" title="Top-K" />
+        <select id="labelFilter">
+          <option value="all">标签: 全部</option>
+          <option value="EHS">标签: EHS</option>
+          <option value="浦江管理制度">标签: 浦江管理制度</option>
+        </select>
+        <button id="loadBtn">加载并分析</button>
+        <button id="showErrorsBtn" class="secondary">只看错误</button>
+        <button id="showAllBtn" class="secondary">显示全部</button>
+        <div class="spacer"></div>
+        <button id="exportErrorsBtn">导出错误为CSV</button>
+      </div>
+      <div class="hint">选择 dify_eval_results.jsonl，点击“加载并分析”。可按标签过滤、切换只看错误、导出错误明细。</div>
+    </div>
+  </header>
+
+  <section class="panel card">
+    <div class="section-title">总体指标</div>
+    <div id="metrics" class="metrics">
+      <div class="metric"><div class="label">样本数</div><div id="mCount" class="value">-</div></div>
+      <div class="metric ok"><div class="label">Hit@K</div><div id="mHitK" class="value">-</div></div>
+      <div class="metric warn"><div class="label">Top1</div><div id="mTop1" class="value">-</div></div>
+      <div class="metric"><div class="label">命中数</div><div id="mHits" class="value">-</div></div>
+      <div class="metric"><div class="label">错误数</div><div id="mErrors" class="value">-</div></div>
+    </div>
+  </section>
+
+  <section class="panel card">
+    <div class="section-title">可视化</div>
+    <div class="metrics">
+      <div class="metric">
+        <div class="label">整体 Hit vs Miss</div>
+        <canvas id="pieOverall" width="280" height="180"></canvas>
+      </div>
+      <div class="metric">
+        <div class="label">标签分布</div>
+        <canvas id="pieLabelDist" width="280" height="180"></canvas>
+      </div>
+      <div class="metric">
+        <div class="label">各标签命中占比</div>
+        <canvas id="pieLabelHits" width="280" height="180"></canvas>
+      </div>
+      <div class="metric" style="grid-column: span 2;">
+        <div class="label">分标签统计</div>
+        <div class="scroll" style="max-height: 180px;">
+          <table class="grid" id="labelStatsTable">
+            <thead>
+              <tr>
+                <th class="nowrap">标签</th>
+                <th class="nowrap">样本数</th>
+                <th class="nowrap">命中</th>
+                <th class="nowrap">Hit@K</th>
+                <th class="nowrap">Top1</th>
+              </tr>
+            </thead>
+            <tbody id="labelStatsTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel card">
+    <div class="section-title">样本明细</div>
+    <div class="scroll">
+      <table class="grid" id="resultTable">
+        <thead>
+          <tr>
+            <th class="nowrap">#</th>
+            <th class="nowrap">Hit</th>
+            <th class="nowrap">Rank</th>
+            <th class="nowrap">标签</th>
+            <th>Query</th>
+            <th>Expected</th>
+            <th>Predicted Doc Names (TopK)</th>
+          </tr>
+        </thead>
+        <tbody id="resultTbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel card">
+    <div class="section-title">错误汇总</div>
+    <div class="scroll">
+      <table class="grid" id="errorsTable">
+        <thead>
+          <tr>
+            <th class="nowrap">#</th>
+            <th class="nowrap">标签</th>
+            <th>Query</th>
+            <th>Expected</th>
+            <th>Predicted Doc Names (TopK)</th>
+          </tr>
+        </thead>
+        <tbody id="errorsTbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="footer">本页面为静态离线报告，不会上传任何数据。支持在浏览器本地解析 JSONL。</div>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const topkInput = document.getElementById('topkInput');
+    const loadBtn = document.getElementById('loadBtn');
+    const showErrorsBtn = document.getElementById('showErrorsBtn');
+    const showAllBtn = document.getElementById('showAllBtn');
+    const exportErrorsBtn = document.getElementById('exportErrorsBtn');
+    const labelFilter = document.getElementById('labelFilter');
+
+    const mCount = document.getElementById('mCount');
+    const mHitK = document.getElementById('mHitK');
+    const mTop1 = document.getElementById('mTop1');
+    const mHits = document.getElementById('mHits');
+    const mErrors = document.getElementById('mErrors');
+
+    const resultTbody = document.getElementById('resultTbody');
+    const errorsTbody = document.getElementById('errorsTbody');
+    const labelStatsTbody = document.getElementById('labelStatsTbody');
+    const pieOverall = document.getElementById('pieOverall');
+    const pieLabelDist = document.getElementById('pieLabelDist');
+    const pieLabelHits = document.getElementById('pieLabelHits');
+
+    let allRecords = []; // 每条：{query, expected, hit, hit_rank, pred_doc_names, raw_count}
+    let filteredMode = 'all'; // 'all' | 'errors'
+
+    function parseJSONL(text) {
+      const lines = text.split(/\r?\n/).filter(Boolean);
+      const records = [];
+      for (const line of lines) {
+        try {
+          const obj = JSON.parse(line);
+          records.push(obj);
+        } catch (e) {
+          // ignore bad line
+        }
+      }
+      return records;
+    }
+
+    function applyFilters(records) {
+      const labelValue = labelFilter.value;
+      return records.filter(r => {
+        if (labelValue !== 'all' && (r.label || r.标签) !== labelValue) return false;
+        return true;
+      });
+    }
+
+    function computeMetrics(records, topK) {
+      const total = records.length;
+      let hits = 0;
+      let top1 = 0;
+      const errorItems = [];
+
+      for (const r of records) {
+        if (r.hit) {
+          hits += 1;
+          if (r.hit_rank === 1) top1 += 1;
+        } else {
+          errorItems.push(r);
+        }
+      }
+      return {
+        total,
+        hits,
+        errors: errorItems.length,
+        hitK: total ? (hits / total) : 0,
+        top1: total ? (top1 / total) : 0,
+        errorItems,
+      };
+    }
+
+    function fmtPct(v) {
+      return (v * 100).toFixed(2) + '%';
+    }
+
+    function groupByLabel(records) {
+      const map = new Map();
+      records.forEach(r => {
+        const label = (r.label || r.标签 || '');
+        if (!map.has(label)) map.set(label, []);
+        map.get(label).push(r);
+      });
+      return map;
+    }
+
+    function drawDonut(canvas, series, colors) {
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width, H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
+      const cx = W / 2, cy = H / 2, R = Math.min(W,H) * 0.42, r = R * 0.6;
+      const total = series.reduce((a,b)=>a+b.value,0) || 1;
+      let start = -Math.PI / 2;
+      series.forEach((s, i) => {
+        const ang = (s.value / total) * Math.PI * 2;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.arc(cx, cy, R, start, start + ang);
+        ctx.closePath();
+        ctx.fillStyle = colors[i % colors.length];
+        ctx.fill();
+        start += ang;
+      });
+      // inner hole
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.globalCompositeOperation = 'source-over';
+      // legend
+      const legendX = 10, legendY = 10, lh = 16;
+      series.forEach((s, i) => {
+        ctx.fillStyle = colors[i % colors.length];
+        ctx.fillRect(legendX, legendY + i * (lh + 6), 12, 12);
+        ctx.fillStyle = "#e5e7eb";
+        const pct = total ? ((s.value / total) * 100).toFixed(1) : '0.0';
+        ctx.fillText(`${s.name}: ${s.value} (${pct}%)`, legendX + 18, legendY + 10 + i * (lh + 6));
+      });
+    }
+
+    function renderTable(records) {
+      resultTbody.innerHTML = '';
+      records.forEach((r, idx) => {
+        const tr = document.createElement('tr');
+        const tdIdx = document.createElement('td');
+        tdIdx.textContent = String(idx + 1);
+        const tdHit = document.createElement('td');
+        tdHit.innerHTML = r.hit
+          ? '<span class="pill ok">Hit</span>'
+          : '<span class="pill bad">Miss</span>';
+        const tdRank = document.createElement('td');
+        tdRank.innerHTML = r.hit_rank != null
+          ? '<span class="pill rank">#' + r.hit_rank + '</span>'
+          : '<span class="pill">—</span>';
+        const tdLabel = document.createElement('td');
+        tdLabel.innerHTML = '<span class="pill">' + (r.label || r.标签 || '') + '</span>';
+        const tdQuery = document.createElement('td');
+        tdQuery.textContent = r.query || '';
+        const tdExp = document.createElement('td');
+        tdExp.innerHTML = '<span class="pill">' + (r.expected || '') + '</span>';
+        const tdPred = document.createElement('td');
+        tdPred.innerHTML = (r.pred_doc_names || []).map((name, i) => {
+          const n = String(name || '');
+          const safe = n.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+          return '<div class="muted">[' + (i+1) + '] ' + safe + '</div>';
+        }).join('');
+
+        tr.appendChild(tdIdx);
+        tr.appendChild(tdHit);
+        tr.appendChild(tdRank);
+        tr.appendChild(tdLabel);
+        tr.appendChild(tdQuery);
+        tr.appendChild(tdExp);
+        tr.appendChild(tdPred);
+        resultTbody.appendChild(tr);
+      });
+    }
+
+    function render(records, topK) {
+      const filtered = applyFilters(records);
+      const m = computeMetrics(filtered, topK);
+      mCount.textContent = m.total;
+      mHits.textContent = m.hits;
+      mErrors.textContent = m.errors;
+      mHitK.textContent = fmtPct(m.hitK);
+      mTop1.textContent = fmtPct(m.top1);
+
+      renderTable(filteredMode === 'errors' ? m.errorItems : filtered);
+
+      // 渲染错误表格
+      errorsTbody.innerHTML = '';
+      (m.errorItems).forEach((r, i) => {
+        const tr = document.createElement('tr');
+        const tdIdx = document.createElement('td');
+        tdIdx.textContent = String(i + 1);
+        const tdLabel = document.createElement('td');
+        tdLabel.innerHTML = '<span class="pill">' + (r.label || r.标签 || '') + '</span>';
+        const tdQ = document.createElement('td');
+        tdQ.textContent = r.query || '';
+        const tdE = document.createElement('td');
+        tdE.innerHTML = '<span class="pill">' + (r.expected || '') + '</span>';
+        const tdP = document.createElement('td');
+        tdP.innerHTML = (r.pred_doc_names || []).map((name, j) => {
+          const safe = String(name || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+          return '<div class="muted">[' + (j+1) + '] ' + safe + '</div>';
+        }).join('');
+        tr.appendChild(tdIdx);
+        tr.appendChild(tdLabel);
+        tr.appendChild(tdQ);
+        tr.appendChild(tdE);
+        tr.appendChild(tdP);
+        errorsTbody.appendChild(tr);
+      });
+
+      // 分标签统计
+      labelStatsTbody.innerHTML = '';
+      const grouped = groupByLabel(filtered);
+      const labelSeriesDist = [];
+      const labelSeriesHits = [];
+      grouped.forEach((arr, label) => {
+        const mm = computeMetrics(arr, topK);
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${label || '—'}</td>
+                        <td>${mm.total}</td>
+                        <td>${mm.hits}</td>
+                        <td>${fmtPct(mm.hitK)}</td>
+                        <td>${fmtPct(mm.top1)}</td>`;
+        labelStatsTbody.appendChild(tr);
+        labelSeriesDist.push({ name: label || '—', value: mm.total });
+        labelSeriesHits.push({ name: label || '—', value: mm.hits });
+      });
+
+      // 饼图
+      drawDonut(pieOverall, [
+        { name: 'Hit', value: m.hits },
+        { name: 'Miss', value: m.errors },
+      ], ['#22c55e', '#ef4444']);
+
+      drawDonut(pieLabelDist, labelSeriesDist, ['#60a5fa','#22c55e','#f59e0b','#ef4444','#a78bfa']);
+      drawDonut(pieLabelHits, labelSeriesHits, ['#60a5fa','#22c55e','#f59e0b','#ef4444','#a78bfa']);
+    }
+
+    function exportErrorsCSV(records) {
+      const m = computeMetrics(records, Number(topkInput.value || 5));
+      const rows = [['query','expected','hit','hit_rank','pred_doc_names']];
+      for (const r of m.errorItems) {
+        rows.push([
+          (r.query || '').replace(/\s+/g,' '),
+          (r.expected || '').replace(/\s+/g,' '),
+          String(r.hit),
+          r.hit_rank == null ? '' : String(r.hit_rank),
+          (r.pred_doc_names || []).join(' | ').replace(/\s+/g,' '),
+        ]);
+      }
+      const csv = rows.map(cols => cols.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+      const blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'dify_eval_errors.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    loadBtn.addEventListener('click', async () => {
+      const file = fileInput.files && fileInput.files[0];
+      if (!file) {
+        alert('请先选择 dify_eval_results.jsonl 文件');
+        return;
+      }
+      const txt = await file.text();
+      allRecords = parseJSONL(txt);
+      filteredMode = 'all';
+      render(allRecords, Number(topkInput.value || 5));
+    });
+
+    showErrorsBtn.addEventListener('click', () => {
+      if (!allRecords.length) return;
+      filteredMode = 'errors';
+      render(allRecords, Number(topkInput.value || 5));
+    });
+
+    showAllBtn.addEventListener('click', () => {
+      if (!allRecords.length) return;
+      filteredMode = 'all';
+      render(allRecords, Number(topkInput.value || 5));
+    });
+
+    labelFilter.addEventListener('change', () => {
+      if (!allRecords.length) return;
+      render(allRecords, Number(topkInput.value || 5));
+    });
+
+    exportErrorsBtn.addEventListener('click', () => {
+      if (!allRecords.length) return;
+      // 导出当前过滤后的错误
+      const filtered = applyFilters(allRecords);
+      exportErrorsCSV(filtered);
+    });
+  </script>
+</body>
+</html>
+
